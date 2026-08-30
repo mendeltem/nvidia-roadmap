@@ -1,0 +1,1452 @@
+<title>NVIDIA Silizium-Roadmap</title>
+<style>
+/* ============================================================
+   TOKENS — Licht ist Basis, Dunkel ueberschreibt nur Tokens
+   ============================================================ */
+:root{
+  --ground:#EDF0E7;
+  --surface:#FAFBF6;
+  --surface-2:#E2E8D9;
+  --surface-3:#D6DECA;
+  --ink:#11160E;
+  --ink-2:#39432F;
+  --muted:#6B7561;
+  --line:#C9D3BC;
+  --line-soft:#DDE4D3;
+  --accent:#4C7800;
+  --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.16);
+  --accent-ghost:rgba(118,185,0,.07);
+  --signal:#0C7566;
+  --signal-dim:rgba(12,117,102,.14);
+  --amber:#96620A;
+  --amber-dim:rgba(150,98,10,.14);
+  --shadow:0 1px 0 rgba(17,22,14,.05), 0 12px 32px -20px rgba(17,22,14,.5);
+  --grid-line:rgba(17,22,14,.07);
+
+  --font-display:"Bahnschrift","DIN Alternate","DIN Condensed","Oswald","Arial Narrow","Helvetica Neue",sans-serif;
+  --font-body:"Segoe UI","Helvetica Neue",-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-mono:"Cascadia Mono","Consolas","SFMono-Regular","SF Mono",ui-monospace,monospace;
+
+  --step--1:clamp(.72rem,.7rem + .1vw,.78rem);
+  --step-0:clamp(.92rem,.88rem + .2vw,1rem);
+  --step-1:clamp(1.05rem,1rem + .3vw,1.2rem);
+  --step-2:clamp(1.35rem,1.2rem + .7vw,1.75rem);
+  --step-3:clamp(1.8rem,1.4rem + 1.8vw,2.9rem);
+  --step-4:clamp(2.4rem,1.6rem + 3.6vw,4.6rem);
+
+  --pad:clamp(1rem,3.5vw,2.75rem);
+  --maxw:1220px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#070A05;
+    --surface:#0F150C;
+    --surface-2:#171F12;
+    --surface-3:#1F2919;
+    --ink:#E9F0E3;
+    --ink-2:#B4C1AA;
+    --muted:#7C8974;
+    --line:#242F1D;
+    --line-soft:#1B2415;
+    --accent:#93D900;
+    --accent-hot:#76B900;
+    --accent-dim:rgba(118,185,0,.18);
+    --accent-ghost:rgba(118,185,0,.06);
+    --signal:#3ACFB6;
+    --signal-dim:rgba(58,207,182,.15);
+    --amber:#E3A53A;
+    --amber-dim:rgba(227,165,58,.15);
+    --shadow:0 1px 0 rgba(255,255,255,.03), 0 18px 40px -24px #000;
+    --grid-line:rgba(233,240,227,.06);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#070A05;
+  --surface:#0F150C;
+  --surface-2:#171F12;
+  --surface-3:#1F2919;
+  --ink:#E9F0E3;
+  --ink-2:#B4C1AA;
+  --muted:#7C8974;
+  --line:#242F1D;
+  --line-soft:#1B2415;
+  --accent:#93D900;
+  --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.18);
+  --accent-ghost:rgba(118,185,0,.06);
+  --signal:#3ACFB6;
+  --signal-dim:rgba(58,207,182,.15);
+  --amber:#E3A53A;
+  --amber-dim:rgba(227,165,58,.15);
+  --shadow:0 1px 0 rgba(255,255,255,.03), 0 18px 40px -24px #000;
+  --grid-line:rgba(233,240,227,.06);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:var(--step-0);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-variation-settings:"wght" 700,"wdth" 87;
+  font-weight:700;
+  line-height:1.04;
+  letter-spacing:.004em;
+  text-wrap:balance;
+  margin:0;
+}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent-hot);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:var(--step--1);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+/* ============================================================
+   KOPFLEISTE + HERO
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb,var(--ground) 88%,transparent);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-in{
+  max-width:var(--maxw);margin:0 auto;padding:.55rem var(--pad);
+  display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;
+}
+.brandmark{display:flex;align-items:center;gap:.55rem;margin-right:auto}
+.brandmark span{
+  font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 80;
+  font-size:.95rem;letter-spacing:.07em;text-transform:uppercase;
+}
+.navlinks{display:flex;gap:.1rem;flex-wrap:wrap}
+.navlinks a{
+  font-family:var(--font-mono);font-size:var(--step--1);
+  color:var(--muted);text-decoration:none;padding:.3rem .5rem;border-radius:3px;
+}
+.navlinks a:hover{color:var(--ink);background:var(--accent-ghost)}
+
+.hero{position:relative;padding:clamp(2.2rem,6vw,4.4rem) 0 1.4rem;overflow:hidden}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 10%,transparent 78%);
+  mask-image:radial-gradient(ellipse 90% 70% at 50% 0%,#000 10%,transparent 78%);
+}
+.hero-in{position:relative;z-index:1;display:grid;gap:1.4rem}
+h1.title{
+  font-size:var(--step-4);
+  font-variation-settings:"wght" 700,"wdth" 78;
+  text-transform:uppercase;
+  letter-spacing:-.004em;
+}
+h1.title em{font-style:normal;color:var(--accent)}
+.lede{max-width:62ch;color:var(--ink-2);font-size:var(--step-1);line-height:1.5}
+.hero-meta{display:flex;gap:clamp(1rem,4vw,2.4rem);flex-wrap:wrap;padding-top:.3rem}
+.hero-meta div{display:grid;gap:.1rem}
+.hero-meta b{font-family:var(--font-mono);font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.hero-meta small{font-family:var(--font-mono);font-size:var(--step--1);color:var(--muted);letter-spacing:.05em}
+
+/* ============================================================
+   ZEITSTRAHL
+   ============================================================ */
+.spine-shell{margin-top:.6rem;border:1px solid var(--line);border-radius:4px;background:var(--surface);box-shadow:var(--shadow)}
+.spine-head{
+  display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;
+  padding:.8rem 1rem;border-bottom:1px solid var(--line-soft);
+}
+.spine-scroll{overflow-x:auto;padding:1rem .6rem .3rem}
+.spine{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(112px,1fr);gap:.35rem;min-width:840px}
+.gen-btn{
+  appearance:none;border:0;background:transparent;padding:.4rem .3rem .7rem;cursor:pointer;
+  display:grid;grid-template-rows:1fr auto;gap:.55rem;align-content:end;text-align:left;
+  border-radius:4px;transition:background .18s ease;font:inherit;color:inherit;
+}
+.gen-btn:hover{background:var(--accent-ghost)}
+.bar-track{height:148px;display:flex;align-items:flex-end}
+.bar{
+  width:100%;border-radius:2px 2px 0 0;position:relative;
+  background:linear-gradient(180deg,var(--accent-hot),color-mix(in srgb,var(--accent-hot) 30%,transparent));
+  height:0;transition:height .9s cubic-bezier(.16,.84,.3,1);
+}
+.gen-btn[data-state="future"] .bar{
+  background:repeating-linear-gradient(135deg,var(--signal-dim) 0 5px,transparent 5px 10px);
+  border:1px dashed var(--signal);
+}
+.is-lit .bar{height:var(--h)}
+.gen-label{display:grid;gap:.14rem;border-top:1px solid var(--line);padding-top:.45rem}
+.gen-label .yr{font-family:var(--font-mono);font-size:var(--step--1);color:var(--accent);letter-spacing:.06em}
+.gen-label .nm{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 80;font-size:.94rem;text-transform:uppercase;color:var(--ink);line-height:1.12}
+.gen-label .nd{font-family:var(--font-mono);font-size:.68rem;color:var(--muted)}
+.spine-foot{padding:.6rem 1rem .85rem;border-top:1px solid var(--line-soft);color:var(--muted);font-size:var(--step--1)}
+
+/* ============================================================
+   SEKTIONEN
+   ============================================================ */
+section{padding-block:clamp(2.4rem,6vw,4.2rem)}
+.sec-head{display:grid;gap:.5rem;margin-bottom:1.5rem;max-width:68ch}
+.sec-head h2{font-size:var(--step-3);text-transform:uppercase;font-variation-settings:"wght" 700,"wdth" 80}
+.sec-head p{color:var(--ink-2)}
+
+/* ============================================================
+   VERGLEICHSTABELLE
+   ============================================================ */
+.table-shell{border:1px solid var(--line);border-radius:4px;background:var(--surface);overflow:hidden;box-shadow:var(--shadow)}
+.scroll-hint{
+  display:flex;align-items:center;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--line-soft);
+  font-family:var(--font-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+}
+.table-scroll{overflow-x:auto;overscroll-behavior-x:contain;max-height:78vh;overflow-y:auto}
+table.cmp{border-collapse:separate;border-spacing:0;width:100%;min-width:1240px}
+table.cmp th,table.cmp td{padding:.58rem .75rem;text-align:left;vertical-align:top;border-bottom:1px solid var(--line-soft)}
+table.cmp thead th{
+  position:sticky;top:0;z-index:3;background:var(--surface-2);
+  border-bottom:1px solid var(--line);vertical-align:bottom;min-width:132px;
+}
+table.cmp tbody th{
+  position:sticky;left:0;z-index:2;background:var(--surface);
+  font-family:var(--font-mono);font-size:.72rem;font-weight:400;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--muted);
+  border-right:1px solid var(--line);min-width:196px;
+}
+table.cmp thead th.corner{position:sticky;left:0;top:0;z-index:5;background:var(--surface-2);border-right:1px solid var(--line);min-width:196px}
+table.cmp td{color:var(--ink-2);font-family:var(--font-mono);font-size:.775rem;font-variant-numeric:tabular-nums;line-height:1.45}
+table.cmp td b{color:var(--ink);font-weight:600}
+table.cmp td s{color:var(--muted);text-decoration:none;opacity:.75}
+tbody tr.band th,tbody tr.band td{background:var(--surface-3);border-bottom:1px solid var(--line)}
+tbody tr.band th{color:var(--accent);font-weight:600;letter-spacing:.11em}
+
+.colhead{
+  appearance:none;border:0;background:transparent;cursor:pointer;padding:.2rem 0;text-align:left;
+  display:grid;gap:.22rem;width:100%;color:inherit;font:inherit;
+}
+.colhead .nm{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 82;font-size:1rem;text-transform:uppercase;color:var(--ink);line-height:1.1}
+.colhead .sub{font-family:var(--font-mono);font-size:.67rem;color:var(--muted)}
+.colhead .more{font-family:var(--font-mono);font-size:.63rem;color:var(--accent);letter-spacing:.09em;text-transform:uppercase;opacity:0;transition:opacity .15s ease}
+.colhead:hover .more,.colhead:focus-visible .more{opacity:1}
+
+.tag{
+  display:inline-flex;align-items:center;gap:.32rem;
+  font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.1rem .36rem;border-radius:2px;border:1px solid;white-space:nowrap;line-height:1.5;
+}
+.tag::before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor;flex:none}
+.tag.ship{color:var(--accent);border-color:var(--accent-dim);background:var(--accent-dim)}
+.tag.ramp{color:var(--amber);border-color:var(--amber-dim);background:var(--amber-dim)}
+.tag.plan{color:var(--signal);border-color:var(--signal-dim);background:var(--signal-dim)}
+
+.magbar{display:grid;gap:.26rem;min-width:112px}
+.magbar .val{font-family:var(--font-mono);font-size:.88rem;color:var(--ink);font-weight:600}
+.magbar .trk{height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden}
+.magbar .fil{height:100%;width:0;border-radius:3px;background:var(--accent-hot);transition:width 1s cubic-bezier(.16,.84,.3,1)}
+.magbar[data-est="1"] .fil{background:repeating-linear-gradient(135deg,var(--signal) 0 4px,transparent 4px 8px)}
+.is-lit .magbar .fil{width:var(--w)}
+
+.tfoot-note{padding:.85rem 1rem;border-top:1px solid var(--line);color:var(--muted);font-size:var(--step--1);display:grid;gap:.4rem}
+.tfoot-note b{color:var(--ink-2)}
+
+/* ============================================================
+   DEEP DIVES
+   ============================================================ */
+.dives{display:grid;gap:.6rem}
+details.dive{
+  border:1px solid var(--line);border-radius:4px;background:var(--surface);
+  scroll-margin-top:70px;overflow:hidden;
+}
+details.dive[open]{box-shadow:var(--shadow);border-color:var(--accent-dim)}
+details.dive > summary{
+  list-style:none;cursor:pointer;padding:.95rem 1rem;
+  display:grid;grid-template-columns:auto 1fr auto;gap:.9rem 1rem;align-items:center;
+}
+details.dive > summary::-webkit-details-marker{display:none}
+details.dive > summary:hover{background:var(--accent-ghost)}
+.dive-idx{
+  font-family:var(--font-mono);font-size:.68rem;color:var(--accent);letter-spacing:.08em;
+  border:1px solid var(--accent-dim);background:var(--accent-dim);border-radius:2px;padding:.22rem .4rem;
+}
+.dive-id{display:grid;gap:.2rem;min-width:0}
+.dive-id h3{font-size:var(--step-2);text-transform:uppercase;font-variation-settings:"wght" 700,"wdth" 82}
+.dive-id .sub{font-family:var(--font-mono);font-size:.72rem;color:var(--muted)}
+.dive-right{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;justify-content:flex-end}
+.dive-hint{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+details.dive[open] .dive-hint::after{content:"schliessen"}
+details.dive:not([open]) .dive-hint::after{content:"details"}
+.chevron{width:11px;height:11px;border-right:1.6px solid var(--accent);border-bottom:1.6px solid var(--accent);transform:rotate(45deg);transition:transform .22s ease;flex:none;margin-bottom:3px}
+details.dive[open] .chevron{transform:rotate(225deg);margin-bottom:-3px}
+
+.dive-body{padding:0 1rem 1.2rem;display:grid;gap:1.3rem;border-top:1px solid var(--line-soft);padding-top:1.1rem}
+.dive-lead{max-width:74ch;color:var(--ink-2)}
+.dive-grid{display:grid;gap:1.3rem;grid-template-columns:repeat(auto-fit,minmax(272px,1fr))}
+.block{display:grid;gap:.55rem;align-content:start}
+.block h4{font-family:var(--font-mono);font-size:.7rem;font-weight:400;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:.4rem}
+.kv{display:grid;gap:.3rem;margin:0}
+.kv div{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dotted var(--line);padding-bottom:.26rem}
+.kv dt{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);letter-spacing:.03em}
+.kv dd{margin:0;font-family:var(--font-mono);font-size:.78rem;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+ul.feat{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+ul.feat li{display:grid;grid-template-columns:auto 1fr;gap:.55rem;font-size:.87rem;color:var(--ink-2);line-height:1.5}
+ul.feat li::before{content:"";width:6px;height:6px;margin-top:.5rem;background:var(--accent-hot);border-radius:1px}
+ul.feat li b{color:var(--ink);font-weight:600}
+.delta{
+  border-left:2px solid var(--accent-hot);background:var(--accent-ghost);
+  padding:.7rem .9rem;border-radius:0 3px 3px 0;font-size:.87rem;color:var(--ink-2);
+}
+.delta b{color:var(--ink)}
+.pills{display:flex;flex-wrap:wrap;gap:.35rem}
+.pill{
+  font-family:var(--font-mono);font-size:.68rem;padding:.22rem .5rem;border-radius:2px;
+  border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);
+}
+
+/* ============================================================
+   TECHNOLOGIE-ATLAS
+   ============================================================ */
+.filters{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.2rem}
+.chip{
+  appearance:none;cursor:pointer;font:inherit;
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.05em;
+  padding:.34rem .68rem;border-radius:2px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);transition:all .15s ease;
+}
+.chip:hover{border-color:var(--accent);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--accent-hot);border-color:var(--accent-hot);color:#0A1104;font-weight:600}
+.chip .n{opacity:.6;margin-left:.35rem}
+
+.atlas{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(258px,1fr))}
+.tcard{
+  border:1px solid var(--line);border-radius:3px;background:var(--surface);
+  padding:.75rem .85rem;display:grid;gap:.4rem;align-content:start;
+}
+.tcard[hidden]{display:none}
+.tcard:hover{border-color:var(--accent);background:var(--accent-ghost)}
+.tcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem}
+.tcard h4{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 85;font-size:1rem;text-transform:uppercase;color:var(--ink);line-height:1.15}
+.tcard p{font-size:.83rem;color:var(--ink-2);line-height:1.45}
+.tcard .dom{font-family:var(--font-mono);font-size:.63rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.atlas-empty{padding:2rem;text-align:center;color:var(--muted);font-family:var(--font-mono);font-size:.8rem;grid-column:1/-1}
+
+/* ============================================================
+   FUSSNOTEN
+   ============================================================ */
+.legend{display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;align-items:center;margin-top:1rem}
+.legend span{display:flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.7rem;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding-block:2rem 3rem;color:var(--muted);font-size:var(--step--1)}
+footer .wrap{display:grid;gap:.7rem;max-width:78ch}
+footer strong{color:var(--ink-2)}
+
+@media (max-width:640px){
+  details.dive > summary{grid-template-columns:auto 1fr;grid-template-areas:"idx id" "right right"}
+  .dive-idx{grid-area:idx}
+  .dive-id{grid-area:id}
+  .dive-right{grid-area:right;justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .is-lit .bar{transition:none}
+}
+</style>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brandmark">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 8 L8 1 L15 8 L8 15 Z" fill="none" stroke="var(--accent-hot)" stroke-width="1.6"/><circle cx="8" cy="8" r="2.2" fill="var(--accent-hot)"/></svg>
+      <span>NVIDIA Roadmap</span>
+    </div>
+    <nav class="navlinks">
+      <a href="#zeitstrahl">Zeitstrahl</a>
+      <a href="#vergleich">Vergleich</a>
+      <a href="#generationen">Generationen</a>
+      <a href="#atlas">Technologien</a>
+      <a href="#quellen">Quellen</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap hero-in">
+    <p class="eyebrow">Rechenzentrum &amp; Grafik &middot; 2020 bis 2028 &middot; Stand August 2026</p>
+    <h1 class="title">Von Ampere<br>zu <em>Feynman</em></h1>
+    <p class="lede">Acht Architekturgenerationen, ein Jahrestakt. Diese Seite vergleicht zuerst die harten Zahlen &mdash; Rechenleistung, Speicherbandbreite, Interconnect &mdash; und geht dann per Klick pro Generation in die Tiefe. Darunter: der vollstaendige Technologie-Atlas von CUDA ueber die NVLink-Kupferspine bis Omniverse.</p>
+    <div class="hero-meta">
+      <div><b>8</b><small>Generationen</small></div>
+      <div><b>~320&times;</b><small>KI-Durchsatz vs. A100</small></div>
+      <div><b>7N &rarr; 3N</b><small>Fertigungsknoten</small></div>
+      <div><b>2,0 &rarr; 22 TB/s</b><small>Speicherbandbreite</small></div>
+      <div><b>600 GB/s &rarr; 3,6 TB/s</b><small>NVLink pro GPU</small></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" id="zeitstrahl">
+  <div class="spine-shell">
+    <div class="spine-head">
+      <div>
+        <h2 style="font-size:var(--step-1);text-transform:uppercase">Leistungssprung pro Generation</h2>
+        <p class="eyebrow" style="margin-top:.25rem">KI-Durchsatz pro GPU, relativ zu A100 &middot; Wurzelskala &middot; Klick oeffnet Details</p>
+      </div>
+      <p class="mono" style="font-size:.7rem;color:var(--muted)">niedrigste jeweils verfuegbare Praezision</p>
+    </div>
+    <div class="spine-scroll">
+      <div class="spine" id="spine">
+        <button class="gen-btn" data-target="d-ampere" data-state="ship" style="--h:7%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2020</span><span class="nm">Ampere</span><span class="nd">TSMC 7N &middot; 1&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-ada" data-state="ship" style="--h:11%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2022</span><span class="nm">Ada Lovelace</span><span class="nd">TSMC 4N &middot; 2,4&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-hopper" data-state="ship" style="--h:18%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2022</span><span class="nm">Hopper</span><span class="nd">TSMC 4N &middot; 6,3&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-blackwell" data-state="ship" style="--h:36%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2024</span><span class="nm">Blackwell</span><span class="nd">TSMC 4NP &middot; 32&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-bwultra" data-state="ship" style="--h:44%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2025</span><span class="nm">Blackwell Ultra</span><span class="nd">TSMC 4NP &middot; 48&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-rubin" data-state="ship" style="--h:71%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2026</span><span class="nm">Rubin</span><span class="nd">TSMC 3N &middot; 160&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-rubinultra" data-state="future" style="--h:100%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2027</span><span class="nm">Rubin Ultra</span><span class="nd">3N &middot; ~320&times;</span></span>
+        </button>
+        <button class="gen-btn" data-target="d-feynman" data-state="future" style="--h:130%">
+          <span class="bar-track"><span class="bar"></span></span>
+          <span class="gen-label"><span class="yr">2028</span><span class="nm">Feynman</span><span class="nd">3D-Stacking &middot; offen</span></span>
+        </button>
+      </div>
+    </div>
+    <p class="spine-foot">Die Balken vergleichen <b>nicht</b> gleiche Zahlenformate: Ampere rechnet FP16, Hopper FP8, ab Blackwell NVFP4. Der Sprung ist also zur Haelfte Silizium und zur Haelfte Zahlenformat &mdash; genau das ist NVIDIAs Strategie. Feynman ist noch ohne offizielle Leistungsangabe; der Balken ist eine Extrapolation.</p>
+  </div>
+</div>
+
+<section id="vergleich">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">01 &middot; Ueberblick</p>
+      <h2>Die Vergleichstabelle</h2>
+      <p>Alle acht Generationen nebeneinander: wie viel schneller, wie viel breiter, wie viel Speicher, welcher Interconnect. Ein Klick auf einen Spaltenkopf springt in den Detailteil dieser Architektur.</p>
+    </div>
+
+    <div class="table-shell">
+      <div class="scroll-hint"><svg width="13" height="9" viewBox="0 0 13 9" aria-hidden="true"><path d="M0 4.5h12M8.5 1l3.5 3.5L8.5 8" fill="none" stroke="currentColor" stroke-width="1.2"/></svg> Tabelle horizontal scrollbar &middot; Spaltenkopf anklicken fuer Details</div>
+      <div class="table-scroll">
+        <table class="cmp">
+          <thead>
+            <tr>
+              <th class="corner"><span class="eyebrow">Merkmal</span></th>
+              <th><button class="colhead" data-target="d-ampere"><span class="nm">Ampere</span><span class="sub">A100 &middot; GA100</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-ada"><span class="nm">Ada Lovelace</span><span class="sub">L40S &middot; AD102</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-hopper"><span class="nm">Hopper</span><span class="sub">H100/H200 &middot; GH100</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-blackwell"><span class="nm">Blackwell</span><span class="sub">B200 &middot; GB200</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-bwultra"><span class="nm">Blackwell Ultra</span><span class="sub">B300 &middot; GB300</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-rubin"><span class="nm">Rubin</span><span class="sub">R200 &middot; VR200</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-rubinultra"><span class="nm">Rubin Ultra</span><span class="sub">VR300 &middot; NVL576</span><span class="more">Details &rarr;</span></button></th>
+              <th><button class="colhead" data-target="d-feynman"><span class="nm">Feynman</span><span class="sub">+ Rosa CPU</span><span class="more">Details &rarr;</span></button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="band"><th>Zeitachse</th><td colspan="8"></td></tr>
+            <tr>
+              <th>Marktstart</th>
+              <td><b>Mai 2020</b></td><td><b>Okt 2022</b></td><td><b>Maerz 2022</b></td><td><b>2024/25</b></td><td><b>2025</b></td><td><b>2026</b></td><td><b>2027</b></td><td><b>2028</b></td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td><span class="tag ship">Reif</span></td>
+              <td><span class="tag ship">Aktiv</span></td>
+              <td><span class="tag ship">Aktiv</span></td>
+              <td><span class="tag ship">Volumen</span></td>
+              <td><span class="tag ship">Volumen</span></td>
+              <td><span class="tag ramp">Hochlauf</span></td>
+              <td><span class="tag plan">Angekuendigt</span></td>
+              <td><span class="tag plan">Roadmap</span></td>
+            </tr>
+
+            <tr class="band"><th>Silizium</th><td colspan="8"></td></tr>
+            <tr>
+              <th>Fertigungsknoten</th>
+              <td>TSMC 7N</td><td>TSMC 4N</td><td>TSMC 4N</td><td>TSMC 4NP</td><td>TSMC 4NP</td><td><b>TSMC 3N</b></td><td>TSMC 3N</td><td>3N-Klasse<br><s>+ 3D-Stacking</s></td>
+            </tr>
+            <tr>
+              <th>Transistoren</th>
+              <td>54,2 Mrd.</td><td>76,3 Mrd.</td><td>80 Mrd.</td><td>208 Mrd.</td><td>208 Mrd.</td><td><b>336 Mrd.</b></td><td>~670 Mrd.<br><s>(4 Dies)</s></td><td>n. v.</td>
+            </tr>
+            <tr>
+              <th>Die-Aufbau</th>
+              <td>1 Die<br><s>826 mm&sup2;</s></td><td>1 Die<br><s>608,5 mm&sup2;</s></td><td>1 Die<br><s>814 mm&sup2;</s></td><td><b>2 Dies</b><br><s>NV-HBI 10 TB/s</s></td><td>2 Dies</td><td>2 Dies</td><td><b>4 Dies</b></td><td>gestapelt<br><s>3D-Stacking</s></td>
+            </tr>
+            <tr>
+              <th>SMs / CUDA-Kerne</th>
+              <td>108 / 6.912</td><td>142 / 18.176</td><td>132 / 16.896</td><td>2&times;72 / 18.432</td><td>160 / 20.480</td><td><b>224</b> / n. v.</td><td>~448</td><td>n. v.</td>
+            </tr>
+            <tr>
+              <th>Tensor-Core-Gen</th>
+              <td>3. Gen</td><td>4. Gen</td><td>4. Gen<br><s>Transformer Engine</s></td><td>5. Gen<br><s>TE 2. Gen</s></td><td>5. Gen</td><td><b>5. Gen+</b></td><td>5. Gen+</td><td>6. Gen (erw.)</td>
+            </tr>
+
+            <tr class="band"><th>Rechenleistung</th><td colspan="8"></td></tr>
+            <tr>
+              <th>KI-Spitzenformat</th>
+              <td>FP16 / TF32</td><td>FP8</td><td>FP8</td><td><b>NVFP4</b></td><td>NVFP4</td><td>NVFP4</td><td>NVFP4</td><td>NVFP4 / FP4+</td>
+            </tr>
+            <tr>
+              <th>Dichte KI-Leistung/GPU</th>
+              <td>312 TFLOPS</td><td>733 TFLOPS</td><td>1,98 PFLOPS</td><td>10 PFLOPS</td><td><b>15 PFLOPS</b></td><td><b>50 PFLOPS</b></td><td>~100 PFLOPS</td><td>n. v.</td>
+            </tr>
+            <tr>
+              <th>Relativ zu A100</th>
+              <td><span class="magbar" style="--w:7%"><span class="val">1,0&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:11%"><span class="val">2,4&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:18%"><span class="val">6,3&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:36%"><span class="val">32&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:44%"><span class="val">48&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:71%"><span class="val">160&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" data-est="1" style="--w:100%"><span class="val">~320&times;</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" data-est="1" style="--w:100%"><span class="val">offen</span><span class="trk"><span class="fil"></span></span></span></td>
+            </tr>
+            <tr>
+              <th>FP64 (HPC)</th>
+              <td><b>9,7 / 19,5 TF</b></td><td>1,4 TF<br><s>kaum FP64</s></td><td><b>34 / 67 TF</b></td><td>40 TF<br><s>reduziert</s></td><td>1,2 TF<br><s>stark reduziert</s></td><td>gering<br><s>KI-Fokus</s></td><td>gering</td><td>gering</td>
+            </tr>
+
+            <tr class="band"><th>Speicher</th><td colspan="8"></td></tr>
+            <tr>
+              <th>Typ &amp; Kapazitaet</th>
+              <td>HBM2e 40/80 GB</td><td>GDDR6 48 GB</td><td>HBM3 80 GB<br><s>H200: HBM3e 141 GB</s></td><td>HBM3e 192 GB</td><td>HBM3e <b>288 GB</b></td><td><b>HBM4 288 GB</b><br><s>8 Stapel</s></td><td><b>HBM4e 1 TB</b></td><td>HBM5 / kundenspez.</td>
+            </tr>
+            <tr>
+              <th>Speicherbandbreite</th>
+              <td><span class="magbar" style="--w:9%"><span class="val">2,0 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:4%"><span class="val">864 GB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:15%"><span class="val">3,35 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:25%"><span class="val">8 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:25%"><span class="val">8 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:69%"><span class="val">22 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" data-est="1" style="--w:100%"><span class="val">~32 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" data-est="1" style="--w:100%"><span class="val">offen</span><span class="trk"><span class="fil"></span></span></span></td>
+            </tr>
+            <tr>
+              <th>L2 / SRAM-Puffer</th>
+              <td>40 MB L2</td><td><b>96 MB L2</b></td><td>50 MB L2</td><td>2&times;50 MB</td><td>2&times;50 MB</td><td>vergroessert</td><td>n. v.</td><td>n. v.</td>
+            </tr>
+
+            <tr class="band"><th>Interconnect</th><td colspan="8"></td></tr>
+            <tr>
+              <th>NVLink-Generation</th>
+              <td>NVLink 3</td><td><s>keiner (L40S)</s></td><td>NVLink 4</td><td>NVLink 5</td><td>NVLink 5</td><td><b>NVLink 6</b></td><td><b>NVLink 7</b></td><td>NVLink 8<br><s>optisch (CPO)</s></td>
+            </tr>
+            <tr>
+              <th>NVLink-Bandbreite/GPU</th>
+              <td><span class="magbar" style="--w:17%"><span class="val">600 GB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:2%"><span class="val">PCIe 4.0</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:25%"><span class="val">900 GB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:50%"><span class="val">1,8 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:50%"><span class="val">1,8 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:100%"><span class="val">3,6 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" style="--w:100%"><span class="val">3,6 TB/s</span><span class="trk"><span class="fil"></span></span></span></td>
+              <td><span class="magbar" data-est="1" style="--w:100%"><span class="val">optisch</span><span class="trk"><span class="fil"></span></span></span></td>
+            </tr>
+            <tr>
+              <th>CPU-Anbindung</th>
+              <td>PCIe 4.0<br><s>64 GB/s</s></td><td>PCIe 4.0</td><td>PCIe 5.0 /<br>NVLink-C2C 900 GB/s</td><td>C2C 900 GB/s<br><s>Grace</s></td><td>PCIe 6.0 /<br>C2C 900 GB/s</td><td><b>C2C 1,8 TB/s</b><br><s>Vera</s></td><td>C2C 1,8 TB/s</td><td>Rosa CPU</td>
+            </tr>
+            <tr>
+              <th>Netzwerk-NIC</th>
+              <td>ConnectX-6</td><td>ConnectX-6/7</td><td>ConnectX-7<br><s>400 Gb/s</s></td><td>ConnectX-8<br><s>800 Gb/s</s></td><td>ConnectX-8</td><td><b>ConnectX-9</b><br><s>800 Gb/s</s></td><td>ConnectX-9</td><td>ConnectX-10</td>
+            </tr>
+            <tr>
+              <th>DPU</th>
+              <td>BlueField-2</td><td>&ndash;</td><td>BlueField-3</td><td>BlueField-3</td><td>BlueField-3</td><td><b>BlueField-4</b></td><td>BlueField-4</td><td>BlueField-5</td>
+            </tr>
+
+            <tr class="band"><th>Rack-System</th><td colspan="8"></td></tr>
+            <tr>
+              <th>Referenzsystem</th>
+              <td>DGX A100<br><s>8 GPUs</s></td><td>OVX / HGX L40S</td><td>DGX H100<br>NVL256 &bdquo;Ranger&ldquo;</td><td><b>GB200 NVL72</b></td><td><b>GB300 NVL72</b></td><td><b>VR200 NVL72</b><br><s>Oberon-Rack</s></td><td><b>NVL576</b><br><s>Kyber-Rack</s></td><td>Kyber / NVL1152</td>
+            </tr>
+            <tr>
+              <th>Rack-KI-Leistung</th>
+              <td>5 PFLOPS<br><s>FP16, 8 GPUs</s></td><td>&ndash;</td><td>32 PFLOPS<br><s>FP8, 8 GPUs</s></td><td>1,4 EFLOPS<br><s>FP4</s></td><td>1,1 EFLOPS<br><s>FP4 dicht</s></td><td><b>3,6 EFLOPS</b><br><s>FP4 Inferenz</s></td><td><b>15 EFLOPS</b><br><s>FP4 Inferenz</s></td><td>n. v.</td>
+            </tr>
+            <tr>
+              <th>Schneller Speicher/Rack</th>
+              <td>640 GB</td><td>&ndash;</td><td>640 GB</td><td>13,5 TB</td><td>20 TB</td><td><b>20,7 TB</b></td><td><b>365 TB</b></td><td>n. v.</td>
+            </tr>
+            <tr>
+              <th>Kuehlung</th>
+              <td>Luft</td><td>Luft</td><td>Luft / Fluessig</td><td><b>Fluessig</b></td><td>Fluessig</td><td>Fluessig</td><td>Fluessig<br><s>vertikale Trays</s></td><td>Fluessig</td>
+            </tr>
+            <tr>
+              <th>TDP pro GPU</th>
+              <td>400 W</td><td>350 W</td><td>700 W</td><td>1.000 W</td><td>1.400 W</td><td><b>~1.800 W</b></td><td>~2.300 W</td><td>n. v.</td>
+            </tr>
+
+            <tr class="band"><th>Einordnung</th><td colspan="8"></td></tr>
+            <tr>
+              <th>Leitidee</th>
+              <td>Ein Chip fuer<br>Training + HPC</td><td>Grafik, Rendering<br>&amp; Inferenz</td><td>Transformer-<br>Beschleuniger</td><td>Das Rack ist<br>die GPU</td><td>Mehr Speicher<br>fuer Reasoning</td><td>Disaggregierte<br>Inferenz</td><td>Extreme<br>Skalierung</td><td>KI-Fabrik im<br>Gigawattmassstab</td>
+            </tr>
+            <tr>
+              <th>Wichtigste Neuerung</th>
+              <td>TF32, MIG,<br>2:4-Sparsity</td><td>SER, DLSS 3,<br>96 MB L2</td><td>Transformer Engine,<br>TMA, Cluster</td><td>NVFP4, 2. TE,<br>NVL72-Domaene</td><td>288 GB HBM3e,<br>PCIe 6.0</td><td>HBM4, NVLink 6,<br>Rubin CPX</td><td>Kyber, NVLink 7,<br>HBM4e 1 TB</td><td>3D-Stacking,<br>optisches NVLink</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tfoot-note">
+        <p><b>Lesehilfe:</b> &bdquo;Dichte KI-Leistung&ldquo; meint Rechenleistung ohne Sparsity-Verdopplung. NVIDIA nennt in Marketingfolien haeufig die doppelten Sparsity-Werte &mdash; hier stehen bewusst die dichten Zahlen, weil nur sie ueber Generationen hinweg vergleichbar bleiben.</p>
+        <p><b>Warnung vor Aepfel/Birnen:</b> Der Vergleich mischt Zahlenformate. 1 PFLOPS in FP4 ist nicht dasselbe Rechenergebnis wie 1 PFLOPS in FP16. Ein Teil des Faktors 320 stammt aus geringerer Genauigkeit, nicht aus mehr Silizium.</p>
+        <p><b>Statusfarben:</b> gruen = ausgeliefert, bernstein = im Hochlauf, tuerkis = angekuendigt/geplant. Alle tuerkisen Werte koennen sich bis zum Marktstart noch aendern.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="generationen">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">02 &middot; Detailteil</p>
+      <h2>Jede Architektur einzeln</h2>
+      <p>Aufklappen fuer Mikroarchitektur, Speichersystem, Interconnect, Systemform und die konkrete Aenderung gegenueber dem Vorgaenger.</p>
+    </div>
+
+    <div class="dives">
+
+      <details class="dive" id="d-ampere">
+        <summary>
+          <span class="dive-idx">2020</span>
+          <span class="dive-id"><h3>Ampere</h3><span class="sub">GA100 / GA102 &middot; TSMC 7N &middot; A100, A30, RTX A6000, RTX 30</span></span>
+          <span class="dive-right"><span class="tag ship">Reif</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Ampere ist die Generation, die den KI-Boom traegt. Der A100 vereint erstmals Training, Inferenz und klassisches HPC in einem Chip und fuehrt drei Ideen ein, die bis heute in jeder Nachfolgearchitektur stecken: ein KI-eigenes Zahlenformat (TF32), strukturierte Sparsity und die Aufteilung einer physischen GPU in mehrere isolierte Instanzen (MIG).</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Kerndaten A100 SXM 80 GB</h4>
+              <dl class="kv">
+                <div><dt>Chip</dt><dd>GA100, 826 mm&sup2;</dd></div>
+                <div><dt>Transistoren</dt><dd>54,2 Mrd.</dd></div>
+                <div><dt>SMs / FP32-Kerne</dt><dd>108 / 6.912</dd></div>
+                <div><dt>Tensor Cores</dt><dd>432 (3. Gen)</dd></div>
+                <div><dt>FP16 Tensor</dt><dd>312 TFLOPS</dd></div>
+                <div><dt>TF32 Tensor</dt><dd>156 TFLOPS</dd></div>
+                <div><dt>INT8</dt><dd>624 TOPS</dd></div>
+                <div><dt>FP64 / FP64 Tensor</dt><dd>9,7 / 19,5 TFLOPS</dd></div>
+                <div><dt>Speicher</dt><dd>80 GB HBM2e</dd></div>
+                <div><dt>Bandbreite</dt><dd>2.039 GB/s</dd></div>
+                <div><dt>NVLink 3</dt><dd>600 GB/s</dd></div>
+                <div><dt>TDP</dt><dd>400 W</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Architektonische Neuerungen</h4>
+              <ul class="feat">
+                <li><b>TF32</b> &mdash; 19-Bit-Format mit FP32-Wertebereich und FP16-Genauigkeit. Bestehender FP32-Code laeuft ohne Aenderung 8&times; schneller ueber die Tensor Cores.</li>
+                <li><b>Strukturierte 2:4-Sparsity</b> &mdash; Hardware ueberspringt in jedem Viererblock zwei Nullgewichte und verdoppelt so den Durchsatz.</li>
+                <li><b>Multi-Instance GPU (MIG)</b> &mdash; bis zu sieben hardwareisolierte GPU-Instanzen mit eigenem Cache, Speicher und Rechenwerk.</li>
+                <li><b>Asynchrones Kopieren</b> &mdash; Daten wandern direkt vom HBM in den Shared Memory, ohne Umweg ueber Register.</li>
+                <li><b>3. Gen NVLink</b> &mdash; 12 Links &agrave; 50 GB/s, zusammen 600 GB/s, plus NVSwitch fuer 8-GPU-Vollvermaschung im DGX A100.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Systeme &amp; Einsatz</h4>
+              <ul class="feat">
+                <li><b>DGX A100</b> &mdash; 8 GPUs, 5 PFLOPS FP16, 640 GB HBM2e, zwei AMD EPYC Rome.</li>
+                <li><b>Selene / Perlmutter</b> &mdash; erste grosse KI-Supercomputer auf A100-Basis.</li>
+                <li><b>GeForce RTX 3090 (GA102)</b> &mdash; gleiche Architektur, aber GDDR6X, 2. Gen RT Cores und DLSS 2.</li>
+              </ul>
+              <div class="delta"><b>Warum Ampere heute noch zaehlt:</b> A100 hat kein FP8 und keine Transformer Engine. Fuer moderne LLM-Inferenz ist er dadurch pro Watt weit abgeschlagen &mdash; als guenstige, breit verfuegbare Trainings- und HPC-GPU mit voller FP64-Leistung ist er aber weiter im Feld.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">TF32</span><span class="pill">2:4 Sparsity</span><span class="pill">MIG 1. Gen</span><span class="pill">NVLink 3</span><span class="pill">HBM2e</span><span class="pill">FP64 Tensor</span><span class="pill">DGX A100</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-ada">
+        <summary>
+          <span class="dive-idx">2022</span>
+          <span class="dive-id"><h3>Ada Lovelace</h3><span class="sub">AD102 &middot; TSMC 4N &middot; L40S, RTX 6000 Ada, GeForce RTX 40</span></span>
+          <span class="dive-right"><span class="tag ship">Aktiv</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Ada ist der Grafikzweig der Roadmap und laeuft parallel zu Hopper. Kein HBM, kein NVLink, dafuer ein 16-fach vergroesserter L2-Cache, Raytracing-Hardware der dritten Generation und die erste Frame-Generierung. Im Rechenzentrum sitzt Ada als L40S dort, wo gleichzeitig gerendert, transkodiert und inferiert wird &mdash; Omniverse, Digital Twins, Video-KI.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Kerndaten L40S / RTX 4090</h4>
+              <dl class="kv">
+                <div><dt>Chip</dt><dd>AD102, 608,5 mm&sup2;</dd></div>
+                <div><dt>Transistoren</dt><dd>76,3 Mrd.</dd></div>
+                <div><dt>SMs / CUDA-Kerne</dt><dd>142 / 18.176 (L40S)</dd></div>
+                <div><dt>RT Cores</dt><dd>142 (3. Gen)</dd></div>
+                <div><dt>FP32 Shader</dt><dd>91,6 TFLOPS</dd></div>
+                <div><dt>FP8 Tensor</dt><dd>733 TFLOPS dicht</dd></div>
+                <div><dt>L2-Cache</dt><dd>96 MB</dd></div>
+                <div><dt>Speicher</dt><dd>48 GB GDDR6 ECC</dd></div>
+                <div><dt>Bandbreite</dt><dd>864 GB/s</dd></div>
+                <div><dt>Video-Engines</dt><dd>3&times; NVENC, 3&times; NVDEC (AV1)</dd></div>
+                <div><dt>TDP</dt><dd>350 W</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Architektonische Neuerungen</h4>
+              <ul class="feat">
+                <li><b>Shader Execution Reordering (SER)</b> &mdash; die GPU sortiert divergente Raytracing-Threads zur Laufzeit neu und gewinnt bis zu 2&times; bei Pfadverfolgung.</li>
+                <li><b>Opacity Micromaps &amp; Displaced Micro-Meshes</b> &mdash; RT Cores verarbeiten Alpha-Tests und dichte Geometrie direkt in Hardware statt im Shader.</li>
+                <li><b>96 MB L2</b> &mdash; der Sprung von 6 MB (GA102) auf 96 MB spart massiv Speicherzugriffe und macht schmales GDDR6 tragbar.</li>
+                <li><b>Optical Flow Accelerator</b> &mdash; Grundlage fuer DLSS 3 Frame Generation.</li>
+                <li><b>Dual AV1-Encoder</b> &mdash; halbiert Encode-Zeiten, Basis fuer Cloud-Gaming und Video-Pipelines.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Systeme &amp; Einsatz</h4>
+              <ul class="feat">
+                <li><b>L40S</b> &mdash; Universalkarte fuer Rendering, Omniverse, Video und mittelgrosse Inferenz.</li>
+                <li><b>RTX 6000 Ada</b> &mdash; 48 GB, Workstation-Flaggschiff.</li>
+                <li><b>GeForce RTX 40</b> &mdash; DLSS 3, Reflex, RTX Remix.</li>
+              </ul>
+              <div class="delta"><b>Bewusste Einschraenkung:</b> Ada hat weder NVLink noch nennenswerte FP64-Leistung. Wer mehrere GPUs eng koppeln oder Simulationen in doppelter Genauigkeit rechnen will, ist bei Hopper richtig &mdash; das ist Produktpolitik, kein Versehen.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">SER</span><span class="pill">RT Cores 3. Gen</span><span class="pill">96 MB L2</span><span class="pill">FP8</span><span class="pill">DLSS 3</span><span class="pill">AV1 Dual-Encoder</span><span class="pill">Omniverse OVX</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-hopper">
+        <summary>
+          <span class="dive-idx">2022</span>
+          <span class="dive-id"><h3>Hopper</h3><span class="sub">GH100 &middot; TSMC 4N &middot; H100, H200, GH200 Grace Hopper</span></span>
+          <span class="dive-right"><span class="tag ship">Aktiv</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Hopper ist die erste Architektur, die explizit fuer Transformer gebaut wurde. Die Transformer Engine analysiert pro Schicht die Wertebereiche der Tensoren und schaltet dynamisch zwischen FP8 und FP16 um &mdash; das verdoppelt den Durchsatz ohne sichtbaren Qualitaetsverlust. Dazu kommt ein neues Programmiermodell mit Thread-Block-Clustern, das erstmals mehrere SMs gemeinsam auf einem Datenblock arbeiten laesst.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Kerndaten H100 SXM / H200</h4>
+              <dl class="kv">
+                <div><dt>Chip</dt><dd>GH100, 814 mm&sup2;</dd></div>
+                <div><dt>Transistoren</dt><dd>80 Mrd.</dd></div>
+                <div><dt>SMs / FP32-Kerne</dt><dd>132 / 16.896</dd></div>
+                <div><dt>FP8 Tensor</dt><dd>1.979 TFLOPS dicht</dd></div>
+                <div><dt>FP16 Tensor</dt><dd>989 TFLOPS dicht</dd></div>
+                <div><dt>TF32 Tensor</dt><dd>495 TFLOPS dicht</dd></div>
+                <div><dt>FP64 / FP64 Tensor</dt><dd>34 / 67 TFLOPS</dd></div>
+                <div><dt>Speicher H100</dt><dd>80 GB HBM3</dd></div>
+                <div><dt>Speicher H200</dt><dd>141 GB HBM3e</dd></div>
+                <div><dt>Bandbreite</dt><dd>3,35 / 4,8 TB/s</dd></div>
+                <div><dt>NVLink 4</dt><dd>900 GB/s</dd></div>
+                <div><dt>TDP</dt><dd>700 W</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Architektonische Neuerungen</h4>
+              <ul class="feat">
+                <li><b>Transformer Engine (1. Gen)</b> &mdash; automatische FP8/FP16-Umschaltung pro Schicht mit Skalierungsstatistik.</li>
+                <li><b>Thread Block Clusters</b> &mdash; mehrere Bloecke teilen sich Distributed Shared Memory ueber SM-Grenzen hinweg.</li>
+                <li><b>Tensor Memory Accelerator (TMA)</b> &mdash; asynchrone, mehrdimensionale Kopiereinheit; entlastet die Recheneinheiten vom Adressrechnen.</li>
+                <li><b>DPX-Befehle</b> &mdash; Hardwarebeschleunigung fuer dynamische Programmierung (Genomik, Routenplanung), bis 7&times; schneller als Ampere.</li>
+                <li><b>Confidential Computing</b> &mdash; erste GPU mit hardwareverschluesselter, isolierter Ausfuehrungsumgebung.</li>
+                <li><b>NVLink Switch System</b> &mdash; bis zu 256 GPUs in einer NVLink-Domaene (Ranger/NVL256).</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Grace Hopper &amp; Systeme</h4>
+              <ul class="feat">
+                <li><b>GH200</b> &mdash; Grace-CPU (72 Arm Neoverse V2) und H100 auf einem Modul, per NVLink-C2C mit 900 GB/s gekoppelt und kohaerent adressierbar. Bis 624 GB gemeinsamer Speicher.</li>
+                <li><b>DGX H100 / HGX H100</b> &mdash; 8 GPUs, 32 PFLOPS FP8.</li>
+                <li><b>H200 NVL</b> &mdash; PCIe-Variante mit Bruecke fuer Bestandsrechenzentren.</li>
+              </ul>
+              <div class="delta"><b>Sprung gegenueber Ampere:</b> rund 6&times; mehr KI-Durchsatz pro GPU &mdash; etwa 3&times; aus Silizium und Takt, weitere 2&times; aus dem Wechsel von FP16 auf FP8. Genau dieses Muster wiederholt sich bei Blackwell mit FP4.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">Transformer Engine</span><span class="pill">FP8</span><span class="pill">TMA</span><span class="pill">Thread Block Cluster</span><span class="pill">DPX</span><span class="pill">NVLink 4</span><span class="pill">Grace Hopper C2C</span><span class="pill">Confidential Computing</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-blackwell">
+        <summary>
+          <span class="dive-idx">2024</span>
+          <span class="dive-id"><h3>Blackwell</h3><span class="sub">B100/B200 &middot; TSMC 4NP &middot; GB200 NVL72, RTX 50, DGX Spark</span></span>
+          <span class="dive-right"><span class="tag ship">Volumen</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Blackwell verschiebt die Einheit, in der NVIDIA denkt: nicht mehr die GPU, sondern das Rack. Zwei retikelgrosse Dies verschmelzen ueber eine 10 TB/s schnelle Bruecke zu einer logischen GPU, und 72 davon bilden im NVL72 eine einzige NVLink-Domaene mit 130 TB/s Vollvermaschung &mdash; verbunden durch eine Kupferspine aus rund 5.000 Kabeln mit ueber 3 Kilometern Gesamtlaenge. Das neue Zahlenformat NVFP4 halbiert erneut die Bitbreite.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Kerndaten B200 / GB200</h4>
+              <dl class="kv">
+                <div><dt>Aufbau</dt><dd>2 Dies, NV-HBI 10 TB/s</dd></div>
+                <div><dt>Transistoren</dt><dd>208 Mrd.</dd></div>
+                <div><dt>NVFP4 dicht</dt><dd>10 PFLOPS (GB200)</dd></div>
+                <div><dt>FP8 dicht</dt><dd>4,5 PFLOPS</dd></div>
+                <div><dt>Speicher</dt><dd>192 GB HBM3e</dd></div>
+                <div><dt>Bandbreite</dt><dd>8 TB/s</dd></div>
+                <div><dt>NVLink 5</dt><dd>1,8 TB/s je GPU</dd></div>
+                <div><dt>Grace-C2C</dt><dd>900 GB/s</dd></div>
+                <div><dt>TDP</dt><dd>bis 1.200 W</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Architektonische Neuerungen</h4>
+              <ul class="feat">
+                <li><b>NVFP4</b> &mdash; 4-Bit-Gleitkomma mit Mikroskalierung: jeder 16er-Block bekommt einen eigenen FP8-Skalenfaktor, dazu ein globaler FP32-Faktor. Damit bleibt FP4 fuer Inferenz nutzbar.</li>
+                <li><b>Transformer Engine 2. Gen</b> &mdash; steuert die Mikroskalierung pro Tensor automatisch.</li>
+                <li><b>Zwei-Die-Paket mit NV-HBI</b> &mdash; beide Haelften erscheinen der Software als eine GPU mit einheitlichem Speicher.</li>
+                <li><b>Decompression Engine</b> &mdash; entpackt LZ4/Snappy/Deflate mit 800 GB/s direkt in der GPU; beschleunigt Datenbank- und ETL-Lasten.</li>
+                <li><b>RAS Engine</b> &mdash; dedizierte Zuverlaessigkeitseinheit mit vorausschauender Fehlererkennung; noetig, weil ein NVL72-Job ueber 72 GPUs synchron laeuft.</li>
+                <li><b>Confidential Computing mit TEE-I/O</b> &mdash; verschluesselte Daten auch ueber NVLink hinweg.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>GB200 NVL72 &amp; Kabel</h4>
+              <dl class="kv">
+                <div><dt>GPUs / CPUs</dt><dd>72 Blackwell / 36 Grace</dd></div>
+                <div><dt>NVFP4</dt><dd>1,4 EFLOPS</dd></div>
+                <div><dt>HBM3e gesamt</dt><dd>13,5 TB</dd></div>
+                <div><dt>NVLink-Domaene</dt><dd>130 TB/s all-to-all</dd></div>
+                <div><dt>NVLink-Spine</dt><dd>~5.000 Kupferkabel</dd></div>
+                <div><dt>Kabellaenge</dt><dd>&gt; 3 km</dd></div>
+                <div><dt>Rackgewicht</dt><dd>~1,4 t</dd></div>
+                <div><dt>Leistungsaufnahme</dt><dd>~120 kW</dd></div>
+              </dl>
+              <div class="delta"><b>Warum Kupfer statt Optik:</b> NVIDIA verzichtet in der Scale-up-Spine bewusst auf Transceiver. Passives Kupfer ueber wenige Meter spart pro Rack rund 20 kW Optikleistung &mdash; deshalb sitzen die Switch-Trays in der Rackmitte und die Compute-Trays darum herum.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">NVFP4</span><span class="pill">TE 2. Gen</span><span class="pill">NV-HBI</span><span class="pill">NVLink 5</span><span class="pill">NVL72</span><span class="pill">Kupferspine</span><span class="pill">Decompression Engine</span><span class="pill">RAS Engine</span><span class="pill">GB200</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-bwultra">
+        <summary>
+          <span class="dive-idx">2025</span>
+          <span class="dive-id"><h3>Blackwell Ultra</h3><span class="sub">B300 / GB300 NVL72 &middot; TSMC 4NP</span></span>
+          <span class="dive-right"><span class="tag ship">Volumen</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Blackwell Ultra ist kein neues Silizium, sondern ein Zwischenschritt mit einem klaren Ziel: mehr Speicher und mehr Rechenwerke fuer Reasoning-Modelle, die lange Gedankenketten erzeugen und deren KV-Cache im Speicher explodiert. Gleiche Transistorzahl, aber 160 statt 144 aktive SMs, 12-Hi-HBM-Stapel statt 8-Hi und erstmals PCIe 6.0.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Kerndaten B300</h4>
+              <dl class="kv">
+                <div><dt>Aufbau</dt><dd>2 Dies, 4NP</dd></div>
+                <div><dt>Transistoren</dt><dd>208 Mrd.</dd></div>
+                <div><dt>SMs / CUDA-Kerne</dt><dd>160 / 20.480</dd></div>
+                <div><dt>NVFP4 dicht</dt><dd>15 PFLOPS</dd></div>
+                <div><dt>Speicher</dt><dd>288 GB HBM3e (8&times;12-Hi)</dd></div>
+                <div><dt>Bandbreite</dt><dd>8 TB/s</dd></div>
+                <div><dt>Host</dt><dd>PCIe 6.0 &times;16, 256 GB/s</dd></div>
+                <div><dt>NIC</dt><dd>ConnectX-8, 800 Gb/s</dd></div>
+                <div><dt>TDP</dt><dd>bis 1.400 W</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Was sich aendert</h4>
+              <ul class="feat">
+                <li><b>+50 % Speicher</b> &mdash; 288 statt 192 GB. Entscheidend fuer lange Kontexte und grosse KV-Caches, nicht fuer rohe FLOPS.</li>
+                <li><b>+50 % NVFP4-Leistung</b> &mdash; 15 statt 10 PFLOPS dicht, aus mehr SMs und hoeherem Takt.</li>
+                <li><b>Attention-Beschleunigung</b> &mdash; verdoppelter Durchsatz in den Softmax-/Exponentialeinheiten, der Engpass bei langen Sequenzen.</li>
+                <li><b>FP64 stark reduziert</b> &mdash; nur noch ~1,2 TFLOPS. NVIDIA trennt HPC endgueltig vom KI-Pfad.</li>
+                <li><b>PCIe 6.0</b> &mdash; erste NVIDIA-GPU mit Gen6-Host-Anbindung.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>GB300 NVL72</h4>
+              <dl class="kv">
+                <div><dt>GPUs / CPUs</dt><dd>72 B300 / 36 Grace</dd></div>
+                <div><dt>NVFP4 dicht</dt><dd>1,1 EFLOPS</dd></div>
+                <div><dt>NVFP4 (Sparsity)</dt><dd>bis 1,4 EFLOPS</dd></div>
+                <div><dt>HBM3e gesamt</dt><dd>20 TB</dd></div>
+                <div><dt>Systemspeicher</dt><dd>40 TB gesamt</dd></div>
+                <div><dt>NVLink-Domaene</dt><dd>130 TB/s</dd></div>
+                <div><dt>Netzwerk</dt><dd>14,4 TB/s Scale-out</dd></div>
+              </dl>
+              <div class="delta"><b>Einordnung:</b> gegenueber GB200 rund 1,5&times; mehr Inferenzleistung im gleichen Rackformat und mit gleicher Kupferspine. Wer bereits GB200-Infrastruktur hat, kann Compute-Trays tauschen, ohne das Rechenzentrum umzubauen.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">288 GB HBM3e</span><span class="pill">160 SMs</span><span class="pill">PCIe 6.0</span><span class="pill">ConnectX-8</span><span class="pill">Attention-Boost</span><span class="pill">GB300 NVL72</span><span class="pill">Dynamo</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-rubin">
+        <summary>
+          <span class="dive-idx">2026</span>
+          <span class="dive-id"><h3>Rubin</h3><span class="sub">R200 + Vera CPU &middot; TSMC 3N &middot; VR200 NVL72, Rubin CPX</span></span>
+          <span class="dive-right"><span class="tag ramp">Hochlauf</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Rubin ist die erste Plattform, bei der NVIDIA sechs bis sieben neue Chips gleichzeitig auf den Markt bringt: GPU, CPU, NVLink-Switch, SuperNIC, DPU und Ethernet-Switch. Der grosse Bruch liegt im Speicher &mdash; HBM4 hebt die Bandbreite von 8 auf 22 TB/s. Und im Inferenzmodell: mit dem Rubin CPX bekommt die Kontextphase eine eigene, guenstigere GPU.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Rubin GPU (R200)</h4>
+              <dl class="kv">
+                <div><dt>Fertigung</dt><dd>TSMC 3N</dd></div>
+                <div><dt>Transistoren</dt><dd>336 Mrd.</dd></div>
+                <div><dt>Compute-Dies</dt><dd>2</dd></div>
+                <div><dt>SMs</dt><dd>224</dd></div>
+                <div><dt>NVFP4 Inferenz</dt><dd>50 PFLOPS</dd></div>
+                <div><dt>NVFP4 Training</dt><dd>35 PFLOPS</dd></div>
+                <div><dt>Speicher</dt><dd>288 GB HBM4, 8 Stapel</dd></div>
+                <div><dt>Bandbreite</dt><dd>bis 22 TB/s</dd></div>
+                <div><dt>NVLink 6</dt><dd>3,6 TB/s bidirektional</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Vera CPU</h4>
+              <dl class="kv">
+                <div><dt>Kerne</dt><dd>88 NVIDIA Olympus (Arm)</dd></div>
+                <div><dt>Threads</dt><dd>176 (SMT)</dd></div>
+                <div><dt>L3-Cache</dt><dd>164 MB</dd></div>
+                <div><dt>Speicher</dt><dd>bis 1,5 TB LPDDR5X</dd></div>
+                <div><dt>Bandbreite</dt><dd>1,2 TB/s</dd></div>
+                <div><dt>NVLink-C2C</dt><dd>1,8 TB/s</dd></div>
+              </dl>
+              <p style="font-size:.84rem;color:var(--ink-2)">Erster vollstaendig eigenentwickelter NVIDIA-Kern &mdash; Grace nutzte noch Arm-Neoverse-Designs.</p>
+            </div>
+            <div class="block">
+              <h4>Rubin CPX &mdash; die zweite GPU</h4>
+              <ul class="feat">
+                <li><b>Monolithischer Einzeldie</b> mit 30 PFLOPS NVFP4 und <b>128 GB GDDR7</b> statt HBM.</li>
+                <li><b>Fuer die Prefill-Phase</b> &mdash; das Einlesen sehr langer Kontexte ist rechen-, nicht bandbreitenlastig. GDDR7 reicht und kostet einen Bruchteil.</li>
+                <li><b>Disaggregierte Inferenz</b> &mdash; CPX macht Kontext, R200 macht Dekodierung. Etwa 3&times; schnellere Attention-Verarbeitung als GB300.</li>
+                <li><b>4&times; NVENC / 4&times; NVDEC</b> on-die fuer Video-Kontexte.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Plattform-Chips</h4>
+              <ul class="feat">
+                <li><b>NVLink-6-Switch</b> &mdash; 28,8 TB/s pro Switch-Tray, 72 GPUs in einem Hop, 14,4 TFLOPS FP8 In-Network-Compute (SHARP).</li>
+                <li><b>ConnectX-9 SuperNIC</b> &mdash; 800 Gb/s pro Port, 1,6 Tb/s je GPU.</li>
+                <li><b>BlueField-4 DPU</b> &mdash; 64 Grace-Kerne, 800 Gb/s Inline-Verschluesselung, 20 Mio. IOPS; uebernimmt KV-Cache- und Storage-Verwaltung.</li>
+                <li><b>Spectrum-6 Ethernet</b> &mdash; 102,4 Tb/s pro Switch-Chip, 32 Silizium-Photonik-Engines, rund 5&times; effizienter als steckbare Optik.</li>
+                <li><b>Quantum-X InfiniBand</b> mit Co-Packaged Optics fuer Scale-out.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>VR200 NVL72</h4>
+              <dl class="kv">
+                <div><dt>GPUs / CPUs</dt><dd>72 Rubin / 36 Vera</dd></div>
+                <div><dt>NVFP4 Inferenz</dt><dd>3,6 EFLOPS</dd></div>
+                <div><dt>HBM4 gesamt</dt><dd>20,7 TB</dd></div>
+                <div><dt>Rackformat</dt><dd>Oberon, fluessiggekuehlt</dd></div>
+                <div><dt>Verfuegbarkeit</dt><dd>Volumen H2/2026</dd></div>
+              </dl>
+              <div class="delta"><b>Sprung gegenueber Blackwell:</b> 5&times; NVFP4-Inferenz, 3,5&times; Training, 2,8&times; Speicherbandbreite, 2&times; NVLink &mdash; bei 1,6&times; Transistoren. Der Rest kommt aus 3N, HBM4 und der Arbeitsteilung mit CPX.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">HBM4</span><span class="pill">NVLink 6</span><span class="pill">Vera / Olympus</span><span class="pill">Rubin CPX</span><span class="pill">GDDR7</span><span class="pill">ConnectX-9</span><span class="pill">BlueField-4</span><span class="pill">Spectrum-6 CPO</span><span class="pill">Disaggregierte Inferenz</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-rubinultra">
+        <summary>
+          <span class="dive-idx">2027</span>
+          <span class="dive-id"><h3>Rubin Ultra</h3><span class="sub">VR300 &middot; NVL576 im Kyber-Rack</span></span>
+          <span class="dive-right"><span class="tag plan">Angekuendigt</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Rubin Ultra ist der bislang groesste Formfaktorwechsel: vier retikelgrosse Dies pro Paket, 1 TB HBM4e und ein voellig neues Rack namens Kyber, in dem die Compute-Blades senkrecht wie Buchseiten stehen. Die NVLink-Domaene waechst von 72 auf 576 Dies.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Erwartete Kerndaten</h4>
+              <dl class="kv">
+                <div><dt>Dies pro Paket</dt><dd>4 (retikelgross)</dd></div>
+                <div><dt>Speicher pro Paket</dt><dd>1 TB HBM4e</dd></div>
+                <div><dt>NVLink</dt><dd>7. Gen, 3,6 TB/s je GPU</dd></div>
+                <div><dt>NVSwitch 7</dt><dd>144 Ports</dd></div>
+                <div><dt>TDP pro Paket</dt><dd>~2.300 W</dd></div>
+                <div><dt>Marktstart</dt><dd>2. Halbjahr 2027</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Kyber NVL576</h4>
+              <dl class="kv">
+                <div><dt>Dies pro Rack</dt><dd>576</dd></div>
+                <div><dt>NVFP4 Inferenz</dt><dd>15 EFLOPS</dd></div>
+                <div><dt>FP8 Training</dt><dd>5 EFLOPS</dd></div>
+                <div><dt>Schneller Speicher</dt><dd>365 TB</dd></div>
+                <div><dt>NVLink-Domaene</dt><dd>1,5 PB/s</dd></div>
+                <div><dt>Scale-out</dt><dd>115 TB/s (CX-9)</dd></div>
+                <div><dt>Leistungsaufnahme</dt><dd>~600 kW pro Rack</dd></div>
+              </dl>
+            </div>
+            <div class="block">
+              <h4>Was Kyber aendert</h4>
+              <ul class="feat">
+                <li><b>Vertikale Blades</b> &mdash; senkrecht eingeschobene Compute-Trays verkuerzen die Kupferwege zur Midplane und erlauben mehr Dies pro Rack.</li>
+                <li><b>800-VDC-Gleichstrom</b> &mdash; Umstellung der Rack-Stromversorgung, sonst waeren 600 kW nicht sinnvoll verteilbar.</li>
+                <li><b>Fluessigkuehlung als Pflicht</b> &mdash; Luftkuehlung ist ab dieser Klasse nicht mehr vorgesehen.</li>
+                <li><b>Rechenzentrum als Produkt</b> &mdash; Kyber wird zusammen mit dem Omniverse-DSX-Bauplan fuer Gigawatt-KI-Fabriken ausgeliefert.</li>
+              </ul>
+              <div class="delta"><b>Unsicherheit:</b> Alle Werte stammen aus NVIDIAs Roadmap-Praesentationen. Speicherzulieferer haben bereits bei Rubin die HBM4-Ziele nachjustieren muessen &mdash; Aehnliches ist bei HBM4e moeglich.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">4-Die-Paket</span><span class="pill">HBM4e 1 TB</span><span class="pill">NVLink 7</span><span class="pill">NVSwitch 7</span><span class="pill">Kyber-Rack</span><span class="pill">800 VDC</span><span class="pill">NVL576</span></div>
+        </div>
+      </details>
+
+      <details class="dive" id="d-feynman">
+        <summary>
+          <span class="dive-idx">2028</span>
+          <span class="dive-id"><h3>Feynman</h3><span class="sub">Feynman GPU + Rosa CPU + LP40 LPU + BlueField-5</span></span>
+          <span class="dive-right"><span class="tag plan">Roadmap</span><span class="dive-hint"></span><span class="chevron"></span></span>
+        </summary>
+        <div class="dive-body">
+          <p class="dive-lead">Feynman ist NVIDIAs Plattform fuer KI-Fabriken im Gigawattmassstab und benannt nach Richard Feynman. Zwei Dinge sind daran neu und wichtiger als jede FLOPS-Zahl: die GPU wird erstmals dreidimensional gestapelt, und NVLink bekommt eine optische Variante &mdash; Scale-up ueber Licht statt nur ueber Kupfer, rund fuenf Jahre frueher als urspruenglich geplant.</p>
+          <div class="dive-grid">
+            <div class="block">
+              <h4>Bekannte Bausteine</h4>
+              <ul class="feat">
+                <li><b>Feynman GPU</b> &mdash; 3D-Die-Stacking und kundenspezifischer HBM (HBM5-Klasse) statt Standardstapel.</li>
+                <li><b>Rosa CPU</b> &mdash; benannt nach Rosalind Franklin; Nachfolger von Vera, ausgelegt auf Datenbewegung und Werkzeugaufrufe agentischer KI.</li>
+                <li><b>LP40 LPU</b> &mdash; dritte Generation der Groq-basierten Inferenzbeschleuniger mit NVFP4-Unterstuetzung, als eigene Produktlinie neben der GPU.</li>
+                <li><b>BlueField-5</b> &mdash; als &bdquo;Rechenzentrums-Betriebssystem&ldquo;: Sicherheit, Storage (CMX) und KV-Cache-Verwaltung wandern von der GPU auf die DPU.</li>
+                <li><b>ConnectX-10</b> &mdash; naechste SuperNIC-Generation.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Optisches NVLink</h4>
+              <ul class="feat">
+                <li><b>Co-Packaged Optics im Scale-up</b> &mdash; erstmals wahlweise Kupfer <em>oder</em> Optik innerhalb der NVLink-Domaene. Kupfer bleibt fuer kurze Wege effizienter, Optik loest die Laengenbegrenzung.</li>
+                <li><b>Spectrum-7 Ethernet mit CPO</b> fuer Scale-out zwischen Racks und Gebaeuden.</li>
+                <li><b>Kyber-Racks</b> bleiben der Formfaktor; diskutiert werden Domaenen bis NVL1152.</li>
+              </ul>
+            </div>
+            <div class="block">
+              <h4>Offene Punkte</h4>
+              <dl class="kv">
+                <div><dt>Rechenleistung</dt><dd>nicht veroeffentlicht</dd></div>
+                <div><dt>Speicherkapazitaet</dt><dd>nicht veroeffentlicht</dd></div>
+                <div><dt>Fertigungsknoten</dt><dd>nicht bestaetigt</dd></div>
+                <div><dt>Zahlenformat</dt><dd>NVFP4 + moegl. FP4-Nachfolger</dd></div>
+                <div><dt>Termin</dt><dd>2028</dd></div>
+              </dl>
+              <div class="delta"><b>Realistische Erwartung:</b> Behandle Feynman als Richtungsangabe, nicht als Spezifikation. Belastbar ist die Aussage, <b>woran</b> gearbeitet wird &mdash; 3D-Stacking, optisches Scale-up, DPU als Rechenzentrums-Betriebssystem &mdash; nicht, wie schnell es am Ende wird.</div>
+            </div>
+          </div>
+          <div class="pills"><span class="pill">3D-Stacking</span><span class="pill">Optisches NVLink</span><span class="pill">Rosa CPU</span><span class="pill">LP40 LPU</span><span class="pill">BlueField-5</span><span class="pill">ConnectX-10</span><span class="pill">Spectrum-7 CPO</span><span class="pill">Gigawatt-KI-Fabrik</span></div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<section id="atlas">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">03 &middot; Technologie-Atlas</p>
+      <h2>Woran NVIDIA arbeitet</h2>
+      <p>Silizium ist nur die Haelfte. Hier stehen alle Technologiestraenge nebeneinander &mdash; vom Zahlenformat ueber die Kupferspine im Rack bis zu Omniverse und der Robotik. Filter nach Bereich oder nach Reifegrad.</p>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="chip" data-filter="all" aria-pressed="true">Alle</button>
+      <button class="chip" data-filter="compute" aria-pressed="false">Rechenwerk</button>
+      <button class="chip" data-filter="link" aria-pressed="false">Interconnect &amp; Kabel</button>
+      <button class="chip" data-filter="net" aria-pressed="false">Netzwerk</button>
+      <button class="chip" data-filter="sw" aria-pressed="false">KI-Software</button>
+      <button class="chip" data-filter="omni" aria-pressed="false">Omniverse &amp; Simulation</button>
+      <button class="chip" data-filter="robot" aria-pressed="false">Robotik &amp; Fahrzeug</button>
+      <button class="chip" data-filter="rtx" aria-pressed="false">Grafik &amp; Consumer</button>
+      <button class="chip" data-filter="sys" aria-pressed="false">Systeme</button>
+      <button class="chip" data-filter="wip" aria-pressed="false">In Arbeit</button>
+    </div>
+
+    <div class="atlas" id="atlas">
+
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>CUDA</h4><span class="tag ship">Reif</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Das Programmiermodell seit 2007 und der eigentliche Burggraben. Jede neue Architektur bringt eine Compute Capability, ohne dass bestehender Code neu geschrieben werden muss.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>Tensor Cores</h4><span class="tag ship">5. Gen</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Matrix-Recheneinheiten, seit Volta in jeder Generation neu: FP16 &rarr; TF32 &rarr; FP8 &rarr; NVFP4. Sie liefern den Grossteil des Leistungssprungs pro Generation.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>Transformer Engine</h4><span class="tag ship">2. Gen</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Waehlt pro Schicht und pro Tensor automatisch das kleinstmoegliche Zahlenformat und fuehrt die Skalierungsfaktoren mit. Ohne sie waere FP8/FP4 numerisch unbrauchbar.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>NVFP4</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>4-Bit-Gleitkomma mit Mikroskalierung: FP8-Skalenfaktor je 16er-Block plus globaler FP32-Faktor. Erreicht nahezu FP8-Qualitaet bei halbem Speicherbedarf.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>RT Cores</h4><span class="tag ship">4. Gen</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Strahl-Dreieck-Schnitttests in Hardware, dazu Opacity Micromaps, Displaced Micro-Meshes und in Blackwell die Mega-Geometry-Beschleunigung.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>MIG</h4><span class="tag ship">Reif</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Multi-Instance GPU: bis zu sieben hardwareisolierte Instanzen mit eigenem Speicherpfad &mdash; die Grundlage fuer GPU-Vermietung in der Cloud.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>Confidential Computing</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Verschluesselte Ausfuehrungsumgebung auf der GPU, ab Blackwell inklusive TEE-I/O ueber NVLink. Modellgewichte bleiben auch vor dem Betreiber geschuetzt.</p>
+      </article>
+      <article class="tcard" data-dom="compute" data-status="ship">
+        <div class="top"><h4>Decompression &amp; RAS Engine</h4><span class="tag ship">Blackwell</span></div>
+        <p class="dom">Rechenwerk</p>
+        <p>Feste Funktionsbloecke: Entpacken mit 800 GB/s fuer Datenanalyse, dazu eine Zuverlaessigkeitseinheit, die Ausfaelle vorhersagt, bevor ein 72-GPU-Job abstuerzt.</p>
+      </article>
+
+      <article class="tcard" data-dom="link" data-status="ship">
+        <div class="top"><h4>NVLink</h4><span class="tag ship">6. Gen</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>Direkter GPU-zu-GPU-Pfad mit kohaerentem Speicherzugriff. 600 GB/s bei Ampere, 3,6 TB/s bei Rubin, ab Feynman wahlweise optisch.</p>
+      </article>
+      <article class="tcard" data-dom="link" data-status="ship">
+        <div class="top"><h4>NVSwitch</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>Der Kreuzschienenverteiler der NVLink-Domaene. Im NVL72 verbindet er 72 GPUs so, dass jede jede in einem Sprung erreicht &mdash; 130 TB/s aggregiert.</p>
+      </article>
+      <article class="tcard" data-dom="link" data-status="ship">
+        <div class="top"><h4>NVLink-Spine (Kupfer)</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>Rund 5.000 passive Kupferkabel mit ueber 3 km Gesamtlaenge und etwa 1,4 t Gewicht verbinden im NVL72 alle Trays. Passives Kupfer spart gegenueber Optik rund 20 kW pro Rack.</p>
+      </article>
+      <article class="tcard" data-dom="link" data-status="ship">
+        <div class="top"><h4>NVLink-C2C</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>Kohaerente CPU-GPU-Verbindung: 900 GB/s bei Grace Hopper, 1,8 TB/s bei Vera Rubin. CPU- und GPU-Speicher erscheinen als ein Adressraum.</p>
+      </article>
+      <article class="tcard" data-dom="link" data-status="ship">
+        <div class="top"><h4>NVLink Fusion</h4><span class="tag ramp">Im Aufbau</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>NVLink als lizenzierbares Interface: fremde CPUs und kundeneigene Beschleuniger duerfen sich in die NVLink-Domaene einklinken. Strategisch die Oeffnung des Burggrabens.</p>
+      </article>
+      <article class="tcard" data-dom="link" data-status="ship">
+        <div class="top"><h4>NV-HBI</h4><span class="tag ship">Blackwell</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>High Bandwidth Interface zwischen den zwei Dies eines Pakets: 10 TB/s, so schnell, dass die Software beide Haelften als eine GPU sieht.</p>
+      </article>
+      <article class="tcard" data-dom="link" data-status="plan">
+        <div class="top"><h4>Co-Packaged Optics</h4><span class="tag plan">2027/28</span></div>
+        <p class="dom">Interconnect &amp; Kabel</p>
+        <p>Silizium-Photonik direkt neben dem Switch-Chip statt steckbarer Transceiver. Zuerst im Scale-out (Quantum-X, Spectrum-X), ab Feynman auch im NVLink-Scale-up.</p>
+      </article>
+
+      <article class="tcard" data-dom="net" data-status="ship">
+        <div class="top"><h4>Spectrum-X Ethernet</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>Ethernet mit adaptivem Routing und Stauvermeidung speziell fuer KI-Verkehrsmuster. Spectrum-6 erreicht 102,4 Tb/s pro Switch-Chip.</p>
+      </article>
+      <article class="tcard" data-dom="net" data-status="ship">
+        <div class="top"><h4>Quantum-X InfiniBand</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>Der klassische HPC-Pfad, inzwischen mit Co-Packaged Optics. Bevorzugt dort, wo enge Kollektivoperationen ueber viele Racks laufen.</p>
+      </article>
+      <article class="tcard" data-dom="net" data-status="ship">
+        <div class="top"><h4>SHARP</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>In-Network Computing: der Switch rechnet All-Reduce-Operationen selbst, statt Daten mehrfach zu bewegen. Im NVLink-6-Tray 14,4 TFLOPS FP8.</p>
+      </article>
+      <article class="tcard" data-dom="net" data-status="ship">
+        <div class="top"><h4>ConnectX SuperNIC</h4><span class="tag ramp">CX-9</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>800 Gb/s pro Port mit programmierbarem RDMA. CX-8 bei Blackwell, CX-9 bei Rubin, CX-10 fuer Feynman angekuendigt.</p>
+      </article>
+      <article class="tcard" data-dom="net" data-status="ramp">
+        <div class="top"><h4>BlueField DPU</h4><span class="tag ramp">BF-4</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>Nimmt Netzwerk, Storage und Sicherheit von der CPU. BlueField-4 uebernimmt zusaetzlich KV-Cache-Verwaltung; BlueField-5 soll das Rechenzentrums-Betriebssystem werden.</p>
+      </article>
+      <article class="tcard" data-dom="net" data-status="ship">
+        <div class="top"><h4>GPUDirect &amp; RDMA</h4><span class="tag ship">Reif</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>Direkter Pfad von Netzwerk und NVMe in den GPU-Speicher, ohne Umweg ueber die CPU. Grundlage fuer Storage-Durchsatz in Trainingsclustern.</p>
+      </article>
+      <article class="tcard" data-dom="net" data-status="ramp">
+        <div class="top"><h4>Spectrum-XGS</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Netzwerk</p>
+        <p>Koppelt mehrere Rechenzentren zu einer logischen KI-Fabrik &mdash; Antwort auf Standorte, deren Stromanschluss nicht mehr fuer alles reicht.</p>
+      </article>
+
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>TensorRT &amp; TensorRT-LLM</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Compiler und Laufzeitumgebung fuer Inferenz: Kernel-Fusion, Quantisierung, Paged Attention. Holt aus derselben Hardware oft mehr als ein Generationswechsel.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ramp">
+        <div class="top"><h4>Dynamo</h4><span class="tag ramp">Im Ausbau</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Verteilter Inferenz-Scheduler und Nachfolger des Triton-Servers. Trennt Prefill von Dekodierung ueber Knoten hinweg &mdash; die Software zum Rubin-CPX-Konzept.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>NIM</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Vorgefertigte Inferenz-Container mit fester API. Modelle werden zu austauschbaren Bausteinen statt zu Bastelprojekten.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>NeMo &amp; Nemotron</h4><span class="tag ramp">Aktiv</span></div>
+        <p class="dom">KI-Software</p>
+        <p>NeMo ist das Framework fuer Training und Feinabstimmung, Nemotron die eigene offene Modellfamilie &mdash; NVIDIA liefert inzwischen auch Gewichte, nicht nur Silizium.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>RAPIDS &amp; cuDF</h4><span class="tag ship">Reif</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Datenanalyse auf der GPU mit pandas- und Spark-kompatiblen Schnittstellen. Profitiert direkt von Blackwells Decompression Engine.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>cuLitho</h4><span class="tag ramp">Produktiv</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Beschleunigt die Maskenberechnung in der Chipfertigung um Groessenordnungen &mdash; NVIDIA-GPUs helfen, die naechste Generation NVIDIA-GPUs zu belichten.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>cuQuantum &amp; CUDA-Q</h4><span class="tag ramp">Forschung</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Simulation von Quantenschaltungen und hybride Quanten-GPU-Programmierung. NVIDIA positioniert sich als Rechenpartner der Quantenhardware, nicht als Konkurrent.</p>
+      </article>
+      <article class="tcard" data-dom="sw" data-status="ship">
+        <div class="top"><h4>DOCA</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">KI-Software</p>
+        <p>Das SDK der BlueField-DPUs &mdash; was CUDA fuer die GPU ist, soll DOCA fuer die Netzwerkschicht sein.</p>
+      </article>
+
+      <article class="tcard" data-dom="omni" data-status="ship">
+        <div class="top"><h4>Omniverse</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>Plattform fuer physikalisch korrekte digitale Zwillinge auf Basis von OpenUSD. Mehrere Werkzeuge arbeiten gleichzeitig an derselben Szene &mdash; Fabrik, Rechenzentrum, Roboterzelle.</p>
+      </article>
+      <article class="tcard" data-dom="omni" data-status="ship">
+        <div class="top"><h4>OpenUSD</h4><span class="tag ship">Standard</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>Das Szenenbeschreibungsformat, das Omniverse ueberhaupt erst zusammenhaelt. NVIDIA treibt es aktiv in der Alliance for OpenUSD voran.</p>
+      </article>
+      <article class="tcard" data-dom="omni" data-status="ramp">
+        <div class="top"><h4>Omniverse DSX</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>Bauplan fuer Gigawatt-KI-Fabriken: Strom, Kuehlung, Netzwerk und Racks werden erst als digitaler Zwilling geplant und dann gebaut.</p>
+      </article>
+      <article class="tcard" data-dom="omni" data-status="ramp">
+        <div class="top"><h4>Cosmos</h4><span class="tag ramp">Im Ausbau</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>World Foundation Models: generieren physikalisch plausible Videowelten als Trainingsdaten fuer Roboter und autonome Fahrzeuge.</p>
+      </article>
+      <article class="tcard" data-dom="omni" data-status="ramp">
+        <div class="top"><h4>Newton</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>Offene, GPU-beschleunigte Physik-Engine fuer Robotertraining, gemeinsam mit Google DeepMind und Disney Research entwickelt.</p>
+      </article>
+      <article class="tcard" data-dom="omni" data-status="ship">
+        <div class="top"><h4>Earth-2</h4><span class="tag ramp">Aktiv</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>Digitaler Zwilling des Klimasystems mit KI-Emulatoren wie CorrDiff fuer kilometergenaue regionale Vorhersagen.</p>
+      </article>
+      <article class="tcard" data-dom="omni" data-status="ramp">
+        <div class="top"><h4>NuRec &amp; Neural Rendering</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Omniverse &amp; Simulation</p>
+        <p>Rekonstruiert reale Umgebungen aus Sensorfahrten als 3D-Gaussians und macht sie in Omniverse wieder simulierbar.</p>
+      </article>
+
+      <article class="tcard" data-dom="robot" data-status="ramp">
+        <div class="top"><h4>Isaac GR00T</h4><span class="tag ramp">Im Ausbau</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Offenes Basismodell fuer humanoide Roboter &mdash; ein Modell, das Sprache, Sicht und Bewegung verbindet, statt pro Roboter neu programmiert zu werden.</p>
+      </article>
+      <article class="tcard" data-dom="robot" data-status="ship">
+        <div class="top"><h4>Isaac Sim &amp; Isaac Lab</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Simulationsumgebung fuer Roboter auf Omniverse-Basis, inklusive Reinforcement-Learning-Pipeline fuer den Transfer von Simulation zu Realitaet.</p>
+      </article>
+      <article class="tcard" data-dom="robot" data-status="ship">
+        <div class="top"><h4>Jetson Thor</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Blackwell-basiertes Edge-Modul fuer humanoide Roboter: Rechenzentrums-Architektur in einem Leistungsbudget, das auf einen Roboter passt.</p>
+      </article>
+      <article class="tcard" data-dom="robot" data-status="ramp">
+        <div class="top"><h4>DRIVE Hyperion &amp; Thor</h4><span class="tag ramp">Serie</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Referenzplattform fuer Level-4-faehige Fahrzeuge: Rechner, Sensorsatz und Software-Stack als zertifizierbares Gesamtpaket.</p>
+      </article>
+      <article class="tcard" data-dom="robot" data-status="ramp">
+        <div class="top"><h4>Halos</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Sicherheitssystem fuer autonome Fahrzeuge: Werkzeuge, Pruefverfahren und ein Labor zur Zertifizierung der gesamten Kette.</p>
+      </article>
+      <article class="tcard" data-dom="robot" data-status="ship">
+        <div class="top"><h4>Holoscan &amp; IGX</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Echtzeit-Sensorverarbeitung fuer Medizingeraete und Industrie, auf einer industrietauglichen Edge-Plattform mit Funktionssicherheit.</p>
+      </article>
+      <article class="tcard" data-dom="robot" data-status="ship">
+        <div class="top"><h4>Clara, Parabricks, BioNeMo</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Robotik &amp; Fahrzeug</p>
+        <p>Der Lebenswissenschaften-Zweig: Genomanalyse in Minuten statt Tagen, Basismodelle fuer Proteine und Molekuele, medizinische Bildverarbeitung mit MONAI.</p>
+      </article>
+
+      <article class="tcard" data-dom="rtx" data-status="ship">
+        <div class="top"><h4>DLSS 4</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Grafik &amp; Consumer</p>
+        <p>Multi Frame Generation auf Transformer-Basis: bis zu drei erzeugte Bilder pro gerendertem Bild, dazu Ray Reconstruction fuer saubere Pfadverfolgung.</p>
+      </article>
+      <article class="tcard" data-dom="rtx" data-status="ramp">
+        <div class="top"><h4>RTX Neural Shaders</h4><span class="tag ramp">Neu</span></div>
+        <p class="dom">Grafik &amp; Consumer</p>
+        <p>Kleine neuronale Netze laufen direkt im Shader &mdash; Materialien, Gesichter und Texturkompression werden gelernt statt ausmodelliert.</p>
+      </article>
+      <article class="tcard" data-dom="rtx" data-status="ship">
+        <div class="top"><h4>Reflex 2</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Grafik &amp; Consumer</p>
+        <p>Frame Warp verschiebt das fertige Bild kurz vor der Ausgabe anhand der aktuellsten Mauseingabe und senkt die gefuehlte Latenz deutlich.</p>
+      </article>
+      <article class="tcard" data-dom="rtx" data-status="ramp">
+        <div class="top"><h4>ACE</h4><span class="tag ramp">Im Ausbau</span></div>
+        <p class="dom">Grafik &amp; Consumer</p>
+        <p>Sprach-, Sprech- und Animationsmodelle fuer digitale Figuren und autonome Mitspieler, lokal auf der RTX-GPU ausgefuehrt.</p>
+      </article>
+      <article class="tcard" data-dom="rtx" data-status="ship">
+        <div class="top"><h4>RTX Mega Geometry</h4><span class="tag ship">Blackwell</span></div>
+        <p class="dom">Grafik &amp; Consumer</p>
+        <p>Beschleunigt den Aufbau der Strahlenstruktur fuer Szenen mit Millionen Dreiecken &mdash; Raytracing auf Film-Geometrie in Echtzeit.</p>
+      </article>
+      <article class="tcard" data-dom="rtx" data-status="ship">
+        <div class="top"><h4>GeForce NOW</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Grafik &amp; Consumer</p>
+        <p>Cloud-Gaming auf RTX-Servern, inzwischen mit Blackwell-Rigs und 5K-Streaming &mdash; und ein realer Abnehmer fuer die AV1-Encoder.</p>
+      </article>
+
+      <article class="tcard" data-dom="sys" data-status="ship">
+        <div class="top"><h4>DGX &amp; HGX</h4><span class="tag ship">Reif</span></div>
+        <p class="dom">Systeme</p>
+        <p>Die Referenzserver: DGX als Komplettsystem von NVIDIA, HGX als Baugruppe fuer Partner. Beide definieren, was OEMs dann in Serie bauen.</p>
+      </article>
+      <article class="tcard" data-dom="sys" data-status="ship">
+        <div class="top"><h4>NVL72</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Systeme</p>
+        <p>Das Rack als Recheneinheit: 72 GPUs in einer NVLink-Domaene, fluessiggekuehlt, ueber Kupferspine verbunden. GB200, GB300 und VR200 nutzen dasselbe Grundformat.</p>
+      </article>
+      <article class="tcard" data-dom="sys" data-status="plan">
+        <div class="top"><h4>Kyber</h4><span class="tag plan">2027</span></div>
+        <p class="dom">Systeme</p>
+        <p>Rack der naechsten Generation mit senkrechten Compute-Blades, 800-VDC-Versorgung und bis zu 576 Dies in einer Domaene.</p>
+      </article>
+      <article class="tcard" data-dom="sys" data-status="ship">
+        <div class="top"><h4>MGX</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Systeme</p>
+        <p>Modularer Serverbaukasten, mit dem Partner CPU, GPU und DPU frei kombinieren, ohne das Chassis neu zu entwerfen.</p>
+      </article>
+      <article class="tcard" data-dom="sys" data-status="ship">
+        <div class="top"><h4>DGX Spark &amp; Station</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Systeme</p>
+        <p>Grace-Blackwell am Schreibtisch: kohaerenter Speicher und derselbe Software-Stack wie im Rechenzentrum, fuer Entwicklung und Prototypen.</p>
+      </article>
+      <article class="tcard" data-dom="sys" data-status="ship">
+        <div class="top"><h4>DGX Cloud &amp; Run:ai</h4><span class="tag ship">Aktiv</span></div>
+        <p class="dom">Systeme</p>
+        <p>Gemietete DGX-Kapazitaet bei Hyperscalern plus Run:ai fuer GPU-Scheduling und Mandantentrennung ueber Kubernetes.</p>
+      </article>
+
+      <p class="atlas-empty" id="atlasEmpty" hidden>Keine Eintraege in diesem Filter.</p>
+    </div>
+
+    <div class="legend">
+      <span><span class="tag ship">Reif / Aktiv</span> ausgeliefert und im Einsatz</span>
+      <span><span class="tag ramp">Im Aufbau</span> neu, waechst gerade</span>
+      <span><span class="tag plan">Geplant</span> angekuendigt, noch nicht verfuegbar</span>
+    </div>
+  </div>
+</section>
+
+<footer id="quellen">
+  <div class="wrap">
+    <p><strong>Datenstand:</strong> August 2026. Werte fuer Ampere bis Rubin stammen aus NVIDIA-Datenblaettern, Architektur-Whitepapers und GTC-Praesentationen. Angaben zu Rubin Ultra und Feynman beruhen auf Roadmap-Folien der GTC 2025 und 2026 und sind bis zum Marktstart nicht verbindlich.</p>
+    <p><strong>Methodik:</strong> Alle Leistungsangaben sind dichte Werte ohne Sparsity-Verdopplung, jeweils fuer die SXM-/OAM-Variante. &bdquo;Relativ zu A100&ldquo; vergleicht das jeweils schnellste unterstuetzte KI-Zahlenformat und mischt daher bewusst Praezisionen &mdash; siehe Hinweis unter der Tabelle.</p>
+    <p><strong>Nicht enthalten:</strong> Preise, Liefertermine einzelner Kunden und Werte, die nur aus Zuliefererberichten stammen. Wo NVIDIA nichts veroeffentlicht hat, steht &bdquo;n. v.&ldquo; statt einer Schaetzung.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Balken und Magnitudenleisten einblenden, sobald sichtbar */
+  var lit = new WeakSet();
+  function light(el){ if(!lit.has(el)){ lit.add(el); el.classList.add("is-lit"); } }
+  var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ light(e.target); io.unobserve(e.target); } });
+  },{threshold:.15}) : null;
+
+  var spine = document.getElementById("spine");
+  if(spine){ io ? io.observe(spine) : light(spine); }
+  document.querySelectorAll("table.cmp tbody tr").forEach(function(row){
+    if(!row.querySelector(".magbar")) return;
+    io ? io.observe(row) : light(row);
+  });
+
+  /* Klick auf Zeitstrahl oder Spaltenkopf oeffnet die passende Generation */
+  function openDive(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.open = true;
+    el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+    el.querySelector("summary").focus({preventScroll:true});
+  }
+  document.querySelectorAll("[data-target]").forEach(function(btn){
+    btn.addEventListener("click", function(){ openDive(btn.getAttribute("data-target")); });
+  });
+
+  /* Technologie-Atlas filtern */
+  var chips = Array.prototype.slice.call(document.querySelectorAll("#filters .chip"));
+  var cards = Array.prototype.slice.call(document.querySelectorAll("#atlas .tcard"));
+  var empty = document.getElementById("atlasEmpty");
+
+  chips.forEach(function(chip){
+    var f = chip.getAttribute("data-filter");
+    if(f === "all"){ chip.innerHTML += ' <span class="n">' + cards.length + '</span>'; return; }
+    var n = cards.filter(function(c){
+      return f === "wip" ? c.getAttribute("data-status") !== "ship" : c.getAttribute("data-dom") === f;
+    }).length;
+    chip.innerHTML += ' <span class="n">' + n + '</span>';
+  });
+
+  function applyFilter(f){
+    var shown = 0;
+    cards.forEach(function(c){
+      var match = f === "all" ? true
+        : f === "wip" ? c.getAttribute("data-status") !== "ship"
+        : c.getAttribute("data-dom") === f;
+      c.hidden = !match;
+      if(match) shown++;
+    });
+    empty.hidden = shown > 0;
+  }
+
+  chips.forEach(function(chip){
+    chip.addEventListener("click", function(){
+      chips.forEach(function(c){ c.setAttribute("aria-pressed", String(c === chip)); });
+      applyFilter(chip.getAttribute("data-filter"));
+    });
+  });
+})();
+</script>
