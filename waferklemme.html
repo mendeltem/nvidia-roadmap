@@ -187,7 +187,8 @@ footer strong{color:var(--ink-2)}
     <div><b>18 &rarr; 30 %</b><small>HBM-Anteil am DRAM-Wafer, 2025&ndash;2027</small></div>
     <div><b>3&times; &rarr; 4&times;</b><small>Waferflaeche je Bit, HBM3E &rarr; HBM4</small></div>
     <div><b>96 &rarr; 288 GB</b><small>HBM je Beschleuniger</small></div>
-    <div><b>+14 %</b><small>DRAM-Investitionen 2026</small></div>
+    <div><b>2,6 Mon.</b><small>Verdopplung der Token-Nachfrage</small></div>
+    <div><b>30 Mon.</b><small>Bauzeit einer Fab</small></div>
   </div>
 </div>
 
@@ -229,6 +230,77 @@ footer strong{color:var(--ink-2)}
       <div class="fazit" id="fazit"></div>
     </div>
   </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Die Zahl, auf die es ankommt</p>
+    <h2>30 Prozent Flaeche fuer 13 Prozent Bits</h2>
+    <p>Das Tauschverhaeltnis in einer Zeile. HBM beansprucht 2027 knapp ein Drittel
+    der DRAM-Waferzufuhr und liefert daraus ein Achtel der Bits. Der Rest der Flaeche
+    verschwindet in Stapelhoehe, Durchkontaktierungen und Ausbeuteverlust.</p>
+  </div>
+  <div class="tab-huelle"><div class="tab-scroll"><table>
+    <thead><tr><th>HBM-Anteil</th><th class="zahl">2025</th><th class="zahl">2026</th><th class="zahl">2027</th><th>bedeutet</th></tr></thead>
+    <tbody>
+      <tr><td><b>an der Waferflaeche</b></td><td class="zahl">18 %</td><td class="zahl">22 %</td><td class="zahl"><b>30 %</b></td><td>was es den Fabriken wegnimmt</td></tr>
+      <tr><td><b>an den gelieferten Bits</b></td><td class="zahl">8 %</td><td class="zahl">9 %</td><td class="zahl"><b>13 %</b></td><td>was der Markt dafuer bekommt</td></tr>
+      <tr><td>Verhaeltnis</td><td class="zahl">2,3&times;</td><td class="zahl">2,4&times;</td><td class="zahl">2,3&times;</td><td>Flaeche je Bit gegenueber dem Durchschnitt</td></tr>
+    </tbody>
+  </table></div></div>
+  <div class="fazit klemmt" style="margin-top:1rem">
+    TrendForce beziffert den <b>Deckungsgrad im DRAM auf minus 1 bis minus 2 Prozent
+    fuer 2026</b> &mdash; und erwartet, dass die Luecke sich 2027 weitet, weil die
+    Nachfrage schneller waechst als der Ausbau. Das ist kein Modell, das ist die
+    Bilanz von Angebot und Nachfrage.
+  </div>
+
+  <div class="sec-kopf" style="margin-top:2.2rem">
+    <p class="label">Die Asymmetrie</p>
+    <h2>Zwoelf Verdopplungen in einer Bauzeit</h2>
+    <p>Nicht die Hoehe der Nachfrage ist das Problem, sondern ihr Takt gegen den
+    Takt des Angebots. Beide Seiten wachsen exponentiell, nur mit Exponenten, die
+    zwei Groessenordnungen auseinanderliegen.</p>
+  </div>
+  <div class="tab-huelle"><div class="tab-scroll"><table>
+    <thead><tr><th>Was</th><th class="zahl">gemessen</th><th class="zahl">Verdopplung alle</th></tr></thead>
+    <tbody>
+      <tr><td><b>Token je Woche</b></td><td class="zahl">5 &rarr; 25 Bio in 6 Monaten</td><td class="zahl"><b>2,6 Monate</b></td></tr>
+      <tr><td><b>Token je Tag</b></td><td class="zahl">15 &rarr; 40 Bio in 3 Monaten</td><td class="zahl"><b>2,1 Monate</b></td></tr>
+      <tr><td>Ausgabe-Token je Frage</td><td class="zahl">&gt; 5&times; pro Jahr seit H2 2024</td><td class="zahl">5 Monate</td></tr>
+      <tr><td>DRAM-Waferkapazitaet</td><td class="zahl">rund +5 % pro Jahr</td><td class="zahl">14 Jahre</td></tr>
+      <tr><td>Fab, Entscheidung bis Wafer</td><td class="zahl">&mdash;</td><td class="zahl">30 Monate Bauzeit</td></tr>
+    </tbody>
+  </table></div></div>
+  <div class="fazit klemmt" style="margin-top:1rem">
+    In der Bauzeit einer einzigen Fabrik <b>verdoppelt sich die Nachfrage zwoelfmal</b>.
+    Das ist keine Prognose, sondern der Vergleich zweier gemessener Takte &mdash; und
+    der Grund, warum Kapazitaet als Antwort strukturell zu spaet kommt.
+  </div>
+  <p class="mono" style="font-size:.72rem;color:var(--muted);margin-top:.7rem;max-width:66ch">
+  Ehrlich dazu: Token sind nicht HBM-Bits. Stapelverarbeitung, Quantisierung und
+  Verdichtung des KV-Zwischenspeichers daempfen die Uebertragung erheblich, und die
+  25-fache Jahresrate wird nicht bleiben. Nur aendert das die Richtung nicht: selbst
+  bei einem Zehntel Uebertragung waechst die Nachfrage mit 1,4 gegen 1,05 &mdash;
+  und der Abstand zur Bauzeit einer Fab bleibt.</p>
+
+  <div class="sec-kopf" style="margin-top:2.2rem">
+    <p class="label">Woher die Nachfrage kommt</p>
+    <h2>Agenten fressen Kontext, Kontext frisst HBM</h2>
+    <p>Beim Training zaehlt Bandbreite. Bei Agenten zaehlt <b>Kapazitaet</b>: Inferenz
+    verschiebt sich von der Einzelabfrage zur fortlaufenden Schleife, und der
+    KV-Zwischenspeicher waechst mit dem Kontextfenster und der Zahl gleichzeitiger
+    Sitzungen. Er muss im schnellsten Speicher liegen, sonst bricht die Latenz ein.
+    Dazu kommt die Vervielfachung der Aufrufe: eine agentische Aufgabe loest <b>zehn bis zwanzig Modellaufrufe</b> aus &mdash; Planen, Werkzeugwahl, Ausfuehren, Pruefen, Fehlerbehebung &mdash; wo ein Chatverlauf einen hatte. Deshalb steigt die HBM-Menge je Beschleuniger schneller als deren Stueckzahl.</p>
+  </div>
+  <div class="tab-huelle"><div class="tab-scroll"><table>
+    <thead><tr><th>HBM je Beschleuniger</th><th class="zahl">heute</th><th class="zahl">2026</th><th class="zahl">2027</th></tr></thead>
+    <tbody><tr><td>Gigabyte</td><td class="zahl">96&ndash;192</td><td class="zahl">216&ndash;288</td><td class="zahl"><b>384</b> (Rubin Ultra)</td></tr></tbody>
+  </table></div></div>
+  <p class="mono" style="font-size:.72rem;color:var(--muted);margin-top:.6rem">
+  Vervierfachung je Chip in zwei Jahren, bei gleichzeitig steigender Stueckzahl.
+  TrendForce hat die Prognose fuer den Speichermarkt 2027 deshalb von 843 Mrd. auf
+  1,28 Bio USD angehoben.</p>
 </section>
 
 <section class="wrap">
