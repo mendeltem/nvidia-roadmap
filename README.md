@@ -18,6 +18,23 @@ Generation und ein Atlas mit 56 Technologien.
 Abgedeckt: Ampere · Ada Lovelace · Hopper · Blackwell · Blackwell Ultra ·
 Rubin · Rubin Ultra · Feynman.
 
+## Die Waferklemme
+
+**[waferklemme.html](https://mendeltem.github.io/nvidia-roadmap/waferklemme.html)** —
+warum der normale Speicher knapp wird, obwohl die Fabriken wachsen.
+
+HBM wird nicht neben dem gewöhnlichen DRAM gefertigt, sondern statt seiner, aus
+derselben Waferfläche. Je Bit braucht es das Drei- bis Vierfache. Der HBM-Anteil
+an der DRAM-Waferzufuhr steigt von 18 % (2025) über 22 % (2026) auf geschätzte
+30 % (2027) — wächst die Gesamtkapazität nur um 5 % im Jahr, **schrumpft** die
+Fläche für DDR und NAND bis 2027 um knapp 6 Prozent.
+
+Die Seite rechnet das mit zwei Schiebereglern vor, weil beide Eingangsgrößen
+unsicher sind: Kapazitätswachstum und HBM-Anteil 2027. Dazu das Tauschverhältnis
+je Speicherart und die Investitionen, die die Klemme irgendwann lösen — SK hynix
+hat die Sachanlagen-Zugänge von 8,3 auf 27,5 Bio KRW verdreifacht, geliefert wird
+davon 2028.
+
 ## Aufbau des Repos
 
     nvidia-roadmap.html   Inhaltsquelle (HTML-Fragment, ohne <html>/<head>/<body>)

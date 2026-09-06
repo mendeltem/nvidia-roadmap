@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Die Waferklemme</title>
+<meta name="description" content="HBM frisst die Waferflaeche, die dem normalen DRAM fehlt. Ein Rechner fuer die Klemme: Kapazitaetswachstum gegen HBM-Anteil, dazu die Investitionen, die sie irgendwann loesen.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%2376B900'/></svg>">
+<style>
+:root{
+  --ground:#EDF0E7; --surface:#FAFBF6; --surface-2:#E2E8D9; --surface-3:#D6DECA;
+  --ink:#11160E; --ink-2:#39432F; --muted:#6B7561;
+  --line:#C9D3BC; --line-soft:#DDE4D3;
+  --accent:#4C7800; --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.16); --accent-ghost:rgba(118,185,0,.07);
+  --hbm:#8A4B9E; --hbm-dim:rgba(138,75,158,.16);
+  --eng:#A8442E; --eng-dim:rgba(168,68,46,.14);
+  --signal:#0C7566; --signal-dim:rgba(12,117,102,.14);
+  --shadow:0 1px 0 rgba(17,22,14,.05),0 12px 32px -20px rgba(17,22,14,.5);
+  --font-display:"Bahnschrift","DIN Alternate","Oswald","Arial Narrow",sans-serif;
+  --font-body:"Segoe UI","Helvetica Neue",-apple-system,system-ui,sans-serif;
+  --font-mono:"Cascadia Mono",Consolas,"SFMono-Regular",ui-monospace,monospace;
+  --pad:clamp(1rem,3.5vw,2.75rem); --maxw:1120px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#070A05; --surface:#0F150C; --surface-2:#171F12; --surface-3:#1F2919;
+  --ink:#E9F0E3; --ink-2:#B4C1AA; --muted:#7C8974;
+  --line:#242F1D; --line-soft:#1B2415;
+  --accent:#93D900; --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.18); --accent-ghost:rgba(118,185,0,.06);
+  --hbm:#C48FD8; --hbm-dim:rgba(196,143,216,.18);
+  --eng:#E5806A; --eng-dim:rgba(229,128,106,.16);
+  --signal:#3ACFB6; --signal-dim:rgba(58,207,182,.15);
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 18px 40px -24px #000;
+}}
+:root[data-theme="dark"]{
+  --ground:#070A05; --surface:#0F150C; --surface-2:#171F12; --surface-3:#1F2919;
+  --ink:#E9F0E3; --ink-2:#B4C1AA; --muted:#7C8974;
+  --line:#242F1D; --line-soft:#1B2415;
+  --accent:#93D900; --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.18); --accent-ghost:rgba(118,185,0,.06);
+  --hbm:#C48FD8; --hbm-dim:rgba(196,143,216,.18);
+  --eng:#E5806A; --eng-dim:rgba(229,128,106,.16);
+  --signal:#3ACFB6; --signal-dim:rgba(58,207,182,.15);
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 18px 40px -24px #000;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--font-body);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 84;
+  line-height:1.05;text-wrap:balance}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent-hot);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+
+header.kopf{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb,var(--ground) 90%,transparent);backdrop-filter:blur(12px)}
+.kopf-in{max-width:var(--maxw);margin:0 auto;padding:.55rem var(--pad);
+  display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.marke{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 80;
+  font-size:1rem;text-transform:uppercase;letter-spacing:.05em;margin-right:auto}
+.marke b{color:var(--accent)}
+.kopf-in a{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);
+  text-decoration:none;padding:.28rem .5rem;border-radius:3px}
+.kopf-in a:hover{color:var(--ink);background:var(--accent-ghost)}
+
+.hero{padding:clamp(2rem,5vw,3.6rem) 0 1.4rem}
+h1{font-size:clamp(2.1rem,1.3rem + 3.4vw,4rem);text-transform:uppercase;
+  font-variation-settings:"wght" 700,"wdth" 78}
+h1 em{font-style:normal;color:var(--hbm)}
+.lede{max-width:60ch;color:var(--ink-2);font-size:clamp(1rem,.95rem + .3vw,1.15rem);
+  margin-top:.9rem}
+.kern{display:flex;gap:clamp(1rem,4vw,2.4rem);flex-wrap:wrap;margin-top:1.3rem}
+.kern div{display:grid;gap:.1rem}
+.kern b{font-family:var(--font-mono);font-size:1.4rem;font-weight:600;
+  font-variant-numeric:tabular-nums}
+.kern small{font-family:var(--font-mono);font-size:.66rem;color:var(--muted);
+  letter-spacing:.05em;text-transform:uppercase}
+
+section{padding-block:clamp(2rem,5vw,3.4rem)}
+.sec-kopf{display:grid;gap:.45rem;margin-bottom:1.4rem;max-width:66ch}
+.sec-kopf h2{font-size:clamp(1.5rem,1.2rem + 1.4vw,2.3rem);text-transform:uppercase;
+  font-variation-settings:"wght" 700,"wdth" 80}
+.sec-kopf p{color:var(--ink-2)}
+
+/* Rechner */
+.rechner{border:1px solid var(--line);border-radius:5px;background:var(--surface);
+  box-shadow:var(--shadow);overflow:hidden}
+.regler{display:grid;gap:1.1rem;padding:1.1rem;border-bottom:1px solid var(--line-soft);
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.regler label{display:grid;gap:.4rem}
+.regler .kopfzeile{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.regler .name{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-2)}
+.regler .wert{font-family:var(--font-mono);font-size:1.05rem;font-weight:600;
+  color:var(--ink);font-variant-numeric:tabular-nums}
+.regler input[type=range]{width:100%;accent-color:var(--accent-hot);cursor:pointer}
+.regler .hinweis{font-family:var(--font-mono);font-size:.66rem;color:var(--muted);
+  line-height:1.5}
+
+.ergebnis{padding:1.1rem}
+.jahre{display:grid;gap:.6rem}
+.jahr{display:grid;grid-template-columns:3.4rem 1fr auto;gap:.9rem;align-items:center}
+.jahr .j{font-family:var(--font-mono);font-size:.9rem;color:var(--muted)}
+.balken{height:34px;display:flex;border-radius:3px;overflow:hidden;
+  background:var(--surface-3);min-width:0}
+.balken span{display:flex;align-items:center;padding-inline:.5rem;
+  font-family:var(--font-mono);font-size:.7rem;white-space:nowrap;overflow:hidden;
+  transition:width .35s ease}
+.balken .b-hbm{background:var(--hbm);color:#fff}
+.balken .b-rest{background:var(--accent-hot);color:#0A1104}
+.jahr .delta{font-family:var(--font-mono);font-size:.88rem;font-weight:600;
+  font-variant-numeric:tabular-nums;min-width:5.5rem;text-align:right}
+.delta.minus{color:var(--eng)}
+.delta.plus{color:var(--accent)}
+.legende{display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:.9rem;
+  font-family:var(--font-mono);font-size:.7rem;color:var(--muted)}
+.legende i{display:inline-block;width:11px;height:11px;border-radius:2px;
+  margin-right:.35rem;vertical-align:-1px}
+.fazit{margin-top:1rem;border-left:3px solid var(--accent-hot);
+  background:var(--accent-ghost);padding:.75rem .9rem;border-radius:0 3px 3px 0;
+  font-size:.95rem;color:var(--ink-2)}
+.fazit b{color:var(--ink)}
+.fazit.klemmt{border-left-color:var(--eng);background:var(--eng-dim)}
+
+/* Tauschverhaeltnis */
+.tausch{display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tk{border:1px solid var(--line);border-radius:4px;background:var(--surface);
+  padding:.85rem .95rem;display:grid;gap:.5rem}
+.tk h3{font-size:1.05rem;text-transform:uppercase}
+.tk .flaeche{display:flex;gap:2px;flex-wrap:wrap}
+.tk .flaeche i{width:15px;height:15px;border-radius:2px;background:var(--surface-3)}
+.tk .flaeche i.voll{background:var(--hbm)}
+.tk .zahl{font-family:var(--font-mono);font-size:1.5rem;font-weight:600}
+.tk p{font-size:.85rem;color:var(--ink-2);line-height:1.5}
+
+/* Tabellen */
+.tab-huelle{border:1px solid var(--line);border-radius:4px;background:var(--surface);
+  overflow:hidden;box-shadow:var(--shadow)}
+.tab-scroll{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:520px}
+th,td{padding:.55rem .8rem;text-align:left;border-bottom:1px solid var(--line-soft);
+  font-family:var(--font-mono);font-size:.8rem;font-variant-numeric:tabular-nums}
+thead th{background:var(--surface-2);border-bottom:1px solid var(--line);
+  font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);
+  font-weight:400}
+td.zahl,th.zahl{text-align:right}
+tbody tr:hover td{background:var(--accent-ghost)}
+td b{color:var(--ink)}
+.wachs{color:var(--accent);font-weight:600}
+
+ul.punkte{list-style:none;padding:0;display:grid;gap:.6rem;max-width:66ch}
+ul.punkte li{display:grid;grid-template-columns:auto 1fr;gap:.6rem;color:var(--ink-2)}
+ul.punkte li::before{content:"";width:6px;height:6px;margin-top:.55rem;
+  background:var(--accent-hot);border-radius:1px}
+ul.punkte li b{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding-block:1.8rem 3rem;color:var(--muted);
+  font-size:.82rem}
+footer .wrap{display:grid;gap:.7rem;max-width:78ch}
+footer strong{color:var(--ink-2)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <div class="kopf-in">
+    <span class="marke">Die <b>Waferklemme</b></span>
+    <a href="index.html">&larr; Silizium-Roadmap</a>
+    <a href="https://mendeltem.github.io/AI_Companys/nvidia-oekosystem.html">Oekosystem</a>
+    <a href="https://mendeltem.github.io/AI_news/">Lagemeldung</a>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <p class="label">Warum der normale Speicher knapp wird, obwohl die Fabriken wachsen</p>
+  <h1>Ein Bit <em>HBM</em><br>kostet vier Bits DDR</h1>
+  <p class="lede">HBM wird nicht neben dem normalen DRAM gefertigt, sondern statt seiner &mdash;
+  auf denselben Linien, aus derselben Waferflaeche. Je Bit braucht es das Drei- bis
+  Vierfache. Solange der HBM-Anteil schneller steigt als die Gesamtkapazitaet, sinkt
+  die Flaeche fuer alles andere. Nicht relativ. Absolut.</p>
+  <div class="kern">
+    <div><b>18 &rarr; 30 %</b><small>HBM-Anteil am DRAM-Wafer, 2025&ndash;2027</small></div>
+    <div><b>3&times; &rarr; 4&times;</b><small>Waferflaeche je Bit, HBM3E &rarr; HBM4</small></div>
+    <div><b>96 &rarr; 288 GB</b><small>HBM je Beschleuniger</small></div>
+    <div><b>+14 %</b><small>DRAM-Investitionen 2026</small></div>
+  </div>
+</div>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Der Rechner</p>
+    <h2>Wann kippt es</h2>
+    <p>Zwei Groessen entscheiden, und beide sind unsicher: wie schnell die
+    Gesamtkapazitaet waechst, und wie viel davon HBM 2027 beansprucht. Schieb sie und
+    sieh, was fuer DDR und NAND uebrig bleibt.</p>
+  </div>
+
+  <div class="rechner">
+    <div class="regler">
+      <label>
+        <span class="kopfzeile"><span class="name">Kapazitaetswachstum je Jahr</span>
+          <span class="wert" id="w-wachstum">5 %</span></span>
+        <input type="range" id="wachstum" min="0" max="20" step="1" value="5">
+        <span class="hinweis">TrendForce nennt fuer 2026 rund 5 % Kapazitaets- und
+        16 % Bitwachstum &mdash; der Unterschied kommt aus dichteren Knoten, nicht aus
+        mehr Flaeche.</span>
+      </label>
+      <label>
+        <span class="kopfzeile"><span class="name">HBM-Anteil am Wafer 2027</span>
+          <span class="wert" id="w-anteil">30 %</span></span>
+        <input type="range" id="anteil" min="18" max="45" step="1" value="30">
+        <span class="hinweis">18 % Ende 2025, 22 % Ende 2026. Die 30 % fuer 2027 sind
+        eine Schaetzung &mdash; HBM4 mit vierfachem Flaechenbedarf koennte sie treiben.</span>
+      </label>
+    </div>
+
+    <div class="ergebnis">
+      <div class="jahre" id="jahre"></div>
+      <div class="legende">
+        <span><i style="background:var(--hbm)"></i>HBM</span>
+        <span><i style="background:var(--accent-hot)"></i>DDR, LPDDR, GDDR, alles andere</span>
+        <span>Balkenbreite = Waferflaeche, 2025 = 100</span>
+      </div>
+      <div class="fazit" id="fazit"></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Warum HBM so teuer in Flaeche ist</p>
+    <h2>Das Tauschverhaeltnis</h2>
+    <p>Ein Gigabit ist nicht gleich ein Gigabit. HBM stapelt Chips uebereinander,
+    durchbohrt sie fuer die Durchkontaktierungen und verliert dabei Ausbeute &mdash;
+    alles drei kostet Flaeche, die dem normalen Speicher fehlt.</p>
+  </div>
+  <div class="tausch">
+    <div class="tk">
+      <h3>DDR5</h3>
+      <div class="flaeche"><i class="voll"></i></div>
+      <span class="zahl">1&times;</span>
+      <p>Die Bezugsgroesse. Ein Chip, eine Lage, keine Durchkontaktierung.</p>
+    </div>
+    <div class="tk">
+      <h3>GDDR7</h3>
+      <div class="flaeche"><i class="voll"></i><i class="voll"></i></div>
+      <span class="zahl">1,7&times;</span>
+      <p>Breiteres Interface, hoehere Taktraten, groessere Chipflaeche &mdash; aber
+      noch kein Stapel.</p>
+    </div>
+    <div class="tk">
+      <h3>HBM3E</h3>
+      <div class="flaeche"><i class="voll"></i><i class="voll"></i><i class="voll"></i></div>
+      <span class="zahl">3&times;</span>
+      <p>Acht bis zwoelf Lagen, TSV-Durchkontaktierungen durch jede davon, dazu der
+      Ausbeuteverlust ueber den ganzen Stapel.</p>
+    </div>
+    <div class="tk">
+      <h3>HBM4</h3>
+      <div class="flaeche"><i class="voll"></i><i class="voll"></i><i class="voll"></i><i class="voll"></i></div>
+      <span class="zahl">4&times;</span>
+      <p>Doppelt so breites Interface, mehr Lagen, eigener Logik-Unterbau. Die Klemme
+      verschaerft sich mit jeder Generation.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Die Antwort der Hersteller</p>
+    <h2>Was gegen die Klemme gebaut wird</h2>
+    <p>Kapazitaet ist die einzige Loesung, und sie ist bestellt. Nur dauert eine Fab
+    zweieinhalb bis drei Jahre &mdash; was heute bezahlt wird, liefert 2028.</p>
+  </div>
+  <div class="tab-huelle"><div class="tab-scroll"><table>
+    <thead><tr><th>Investitionen DRAM</th><th class="zahl">2025</th><th class="zahl">2026</th><th class="zahl">Veraenderung</th><th>wofuer</th></tr></thead>
+    <tbody>
+      <tr><td><b>SK hynix</b></td><td class="zahl">17,5</td><td class="zahl">20,5</td><td class="zahl wachs">+17 %</td><td>HBM4 im Werk M15x</td></tr>
+      <tr><td><b>Samsung</b></td><td class="zahl">18,0</td><td class="zahl">20,0</td><td class="zahl wachs">+11 %</td><td>1C-Prozess, P4L</td></tr>
+      <tr><td><b>Micron</b></td><td class="zahl">11,0</td><td class="zahl">13,5</td><td class="zahl wachs">+23 %</td><td>1-gamma, TSV-Anlagen</td></tr>
+      <tr><td><b>zusammen</b></td><td class="zahl"><b>53,7</b></td><td class="zahl"><b>61,3</b></td><td class="zahl wachs">+14 %</td><td>Mrd USD</td></tr>
+    </tbody>
+  </table></div></div>
+
+  <div class="sec-kopf" style="margin-top:1.8rem">
+    <h2 style="font-size:1.2rem">SK hynix allein, aus dem Boersenprospekt</h2>
+  </div>
+  <div class="tab-huelle"><div class="tab-scroll"><table>
+    <thead><tr><th>Sachanlagen-Zugaenge</th><th class="zahl">2023</th><th class="zahl">2024</th><th class="zahl">2025</th><th class="zahl">Q1 2026</th></tr></thead>
+    <tbody><tr><td>Billionen KRW</td><td class="zahl">8,3</td><td class="zahl">15,9</td><td class="zahl"><b>27,5</b></td><td class="zahl">7,7</td></tr></tbody>
+  </table></div></div>
+  <p class="mono" style="font-size:.72rem;color:var(--muted);margin-top:.6rem">
+  Verdreifachung in zwei Jahren. Fuer 2026 kuendigt die Firma im Prospekt an, die
+  Investitionen &bdquo;considerably&ldquo; weiter zu erhoehen; ueber 35 Billionen KRW
+  gesamt, davon rund 90 Prozent in DRAM.</p>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Ehrlichkeit</p>
+    <h2>Woran diese Seite scheitern kann</h2>
+  </div>
+  <ul class="punkte">
+    <li><b>Fast keine dieser Zahlen ist testiert.</b> Waferanteile und Tauschverhaeltnisse
+    stammen von TrendForce, IDC und Counterpoint. Die Groessenordnung ist belastbar,
+    die zweite Stelle nicht.</li>
+    <li><b>HBM steht in keinem Geschaeftsbericht getrennt.</b> SK hynix weist im F-1
+    nur DRAM (77 %) gegen NAND (22 %) aus. Wie viel des Rekordgewinns aus HBM stammt
+    und wie viel aus dem Knappheitspreis beim Massenspeicher, ist oeffentlich nicht
+    entscheidbar.</li>
+    <li><b>Kapazitaet ist nicht Flaeche.</b> Dichtere Fertigungsknoten liefern mehr Bits
+    aus demselben Wafer &mdash; deshalb 16 % Bitwachstum bei etwa 5 % Flaechenwachstum.
+    Der Rechner oben zeigt Flaeche, nicht Bits.</li>
+    <li><b>Die Klemme wirkt in beide Richtungen.</b> Wenn 30 Prozent der Waferflaeche an
+    HBM haengen und die Beschleuniger-Nachfrage einbricht, faellt genau dieser Block
+    zurueck in den Massenmarkt. Die Konzentration, die heute die Knappheit erzeugt,
+    macht die Entspannung spaeter umso abrupter.</li>
+    <li><b>SK hynix schreibt selbst</b> in die Risiken des Prospekts, dass die
+    Durchschnittspreise fuer Speicher &bdquo;irrespective of industry-wide cyclical
+    fluctuations&ldquo; langfristig fallen.</li>
+  </ul>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Quellen.</strong> Waferanteile und Tauschverhaeltnis: TrendForce.
+    Bitwachstum 2026: IDC. HBM-Marktanteile: Counterpoint. Investitionen: TrendForce
+    und Unternehmensangaben. Segment- und Investitionszahlen SK hynix: Form F-1 und
+    424B4 bei der SEC, eingereicht 2026.</p>
+    <p><strong>Stand</strong> 06.09.2026. Diese Seite rechnet ein Verhaeltnis vor, sie
+    sagt keinen Preis voraus. Was sie zeigt, ist der Mechanismus &mdash; wie stark er
+    wirkt, haengt an zwei Zahlen, die oben verstellbar sind, weil niemand sie sicher
+    kennt.</p>
+    <p><strong>Keine Anlageberatung.</strong> Hier steht Arithmetik, keine Empfehlung.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  const $=s=>document.querySelector(s);
+  // HBM-Anteil an der DRAM-Waferzufuhr, TrendForce fuer die Top drei.
+  // 2027 ist verstellbar, weil es die unsicherste und wirksamste Zahl ist.
+  const ANTEIL={2025:.18, 2026:.22, 2027:.30};
+
+  function rechne(){
+    const g=+$("#wachstum").value/100;
+    const a27=+$("#anteil").value/100;
+    ANTEIL[2027]=a27;
+    $("#w-wachstum").textContent=(g*100).toFixed(0)+" %";
+    $("#w-anteil").textContent=(a27*100).toFixed(0)+" %";
+
+    const jahre=[2025,2026,2027];
+    const reihen=jahre.map(j=>{
+      const ges=100*Math.pow(1+g,j-2025);
+      const hbm=ges*ANTEIL[j];
+      return {j, ges, hbm, rest:ges-hbm};
+    });
+    // Breitenbezug: das groesste Gesamtvolumen, damit Wachstum sichtbar bleibt
+    const max=Math.max(...reihen.map(r=>r.ges));
+
+    $("#jahre").innerHTML=reihen.map((r,i)=>{
+      const vor=i? reihen[i-1].rest : null;
+      const d=vor===null? null : (r.rest/vor-1)*100;
+      const breite=r.ges/max*100;
+      const hbmAnteil=r.hbm/r.ges*100;
+      return '<div class="jahr">'
+        + '<span class="j">'+r.j+'</span>'
+        + '<span class="balken" style="width:'+breite.toFixed(1)+'%">'
+        +   '<span class="b-hbm" style="width:'+hbmAnteil.toFixed(1)+'%">'
+        +     (hbmAnteil>13? r.hbm.toFixed(0):'')+'</span>'
+        +   '<span class="b-rest" style="width:'+(100-hbmAnteil).toFixed(1)+'%">'
+        +     r.rest.toFixed(0)+'</span>'
+        + '</span>'
+        + '<span class="delta '+(d===null?'':(d<0?'minus':'plus'))+'">'
+        +   (d===null? '&mdash;' : (d>0?'+':'')+d.toFixed(1)+' %')+'</span>'
+        + '</div>';
+    }).join("");
+
+    const rest27=reihen[2].rest, rest25=reihen[0].rest;
+    const gesamt=(rest27/rest25-1)*100;
+    const f=$("#fazit");
+    if(gesamt<0){
+      f.className="fazit klemmt";
+      f.innerHTML='Bei diesen Werten <b>schrumpft die Waferflaeche fuer normalen '
+        +'Speicher bis 2027 um '+Math.abs(gesamt).toFixed(1)+' Prozent</b> &mdash; '
+        +'obwohl die Gesamtkapazitaet um '+((Math.pow(1+g,2)-1)*100).toFixed(0)
+        +' Prozent waechst. Das ist die Klemme: nicht zu wenig Fabrik, sondern zu '
+        +'viel HBM je Wafer.';
+    } else if(gesamt<8){
+      f.className="fazit";
+      f.innerHTML='Die Flaeche fuer normalen Speicher waechst bis 2027 um nur <b>'
+        +gesamt.toFixed(1)+' Prozent</b>, waehrend die Nachfrage nach Bits zweistellig '
+        +'zulegt. Rechnerisch keine Schrumpfung, praktisch weiter knapp.';
+    } else {
+      f.className="fazit";
+      f.innerHTML='Bei diesen Werten loest sich die Klemme: <b>+'+gesamt.toFixed(1)
+        +' Prozent</b> Flaeche fuer normalen Speicher bis 2027. Dafuer muesste die '
+        +'Kapazitaet allerdings deutlich schneller wachsen, als die Hersteller es '
+        +'derzeit planen.';
+    }
+  }
+  $("#wachstum").addEventListener("input",rechne);
+  $("#anteil").addEventListener("input",rechne);
+  rechne();
+})();
+</script>
+</body>
+</html>

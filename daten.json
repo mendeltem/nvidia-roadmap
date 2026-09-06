@@ -1,0 +1,175 @@
+{
+  "seite": "roadmap",
+  "version": 1,
+  "stand": "2026-09-05",
+  "titel": {
+    "de": "NVIDIA Silizium-Roadmap — von Ampere zu Feynman",
+    "en": "NVIDIA silicon roadmap — from Ampere to Feynman",
+    "mn": "NVIDIA-ийн цахиурын замын зураг — Ampere-ээс Feynman хүртэл"
+  },
+  "url": "https://mendeltem.github.io/nvidia-roadmap/",
+
+  "indikatoren": [
+    {
+      "id": "roadmap.leistung_je_gpu_relativ_a100",
+      "titel": {
+        "de": "KI-Durchsatz je GPU, relativ zur A100",
+        "en": "AI throughput per GPU, relative to the A100",
+        "mn": "GPU тутмын хиймэл оюуны хүчин чадал, A100-тай харьцуулбал"
+      },
+      "wert": 160,
+      "einheit": "x A100",
+      "richtung": "hoch_gut",
+      "zeitreihe": [
+        {"datum": "2020-05-01", "wert": 1.0},
+        {"datum": "2022-03-01", "wert": 6.3},
+        {"datum": "2024-01-01", "wert": 32},
+        {"datum": "2025-01-01", "wert": 48},
+        {"datum": "2026-06-01", "wert": 160}
+      ],
+      "belastbarkeit": "mittel",
+      "quelle_url": "https://mendeltem.github.io/nvidia-roadmap/#vergleich",
+      "stand": "2026-08-31"
+    },
+    {
+      "id": "roadmap.leistung_je_rack_kw",
+      "titel": {
+        "de": "Leistungsaufnahme je Referenzrack",
+        "en": "Power draw per reference rack",
+        "mn": "Лавлагаа рак тутмын цахилгаан хэрэглээ"
+      },
+      "wert": 120,
+      "einheit": "kW",
+      "richtung": "neutral",
+      "zeitreihe": [
+        {"datum": "2024-01-01", "wert": 120},
+        {"datum": "2025-01-01", "wert": 120}
+      ],
+      "belastbarkeit": "mittel",
+      "quelle_url": "https://mendeltem.github.io/nvidia-roadmap/#d-blackwell",
+      "stand": "2026-08-31"
+    },
+    {
+      "id": "roadmap.naechste_generation_termin",
+      "titel": {
+        "de": "Marktstart der naechsten Generation (Rubin Ultra)",
+        "en": "Market launch of the next generation (Rubin Ultra)",
+        "mn": "Дараагийн үеийн зах зээлд гарах он (Rubin Ultra)"
+      },
+      "wert": 2027,
+      "einheit": "Jahr",
+      "richtung": "neutral",
+      "zeitreihe": [
+        {"datum": "2026-08-31", "wert": 2027}
+      ],
+      "belastbarkeit": "duenn",
+      "quelle_url": "https://mendeltem.github.io/nvidia-roadmap/#d-rubinultra",
+      "stand": "2026-08-31"
+    }
+  ],
+
+  "aussagen": [
+    {
+      "id": "roadmap.a1",
+      "text": {
+        "de": "Der Sprung von 1x auf 160x KI-Durchsatz je GPU in sechs Jahren ist zur Haelfte Silizium und zur Haelfte Zahlenformat: Ampere rechnet FP16, Hopper FP8, ab Blackwell NVFP4.",
+        "en": "The jump from 1x to 160x AI throughput per GPU in six years is half silicon and half number format: Ampere computes in FP16, Hopper in FP8, Blackwell onward in NVFP4.",
+        "mn": "Зургаан жилд GPU тутмын хүчин чадал 1x-аас 160x болсны тал нь цахиур, тал нь тооны формат: Ampere FP16, Hopper FP8, Blackwell-ээс хойш NVFP4."
+      },
+      "art": "grenze",
+      "stuetzt_sich_auf": ["roadmap.leistung_je_gpu_relativ_a100"],
+      "belastbarkeit": "solide",
+      "stand": "2026-08-31"
+    },
+    {
+      "id": "roadmap.a2",
+      "text": {
+        "de": "Die verkaufte Einheit ist das Rack, nicht der Baustein. NVL72 zieht rund 120 kW; das fuer 2027 angekuendigte Kyber-Rack ist mit rund 600 kW und 800-VDC-Versorgung geplant.",
+        "en": "The unit sold is the rack, not the chip. NVL72 draws about 120 kW; the Kyber rack announced for 2027 is planned at about 600 kW with 800 VDC supply.",
+        "mn": "Зарагдаж буй нэгж нь микросхем биш рак юм. NVL72 ойролцоогоор 120 кВт татдаг; 2027 онд зарласан Kyber рак 600 кВт, 800 В тогтмол гүйдэлтэй төлөвлөгдсөн."
+      },
+      "art": "befund",
+      "stuetzt_sich_auf": ["roadmap.leistung_je_rack_kw"],
+      "belastbarkeit": "mittel",
+      "stand": "2026-08-31"
+    },
+    {
+      "id": "roadmap.a3",
+      "text": {
+        "de": "Alle Angaben zu Rubin Ultra und Feynman stammen aus Roadmap-Folien der GTC 2025 und 2026 und sind bis zum Marktstart nicht verbindlich.",
+        "en": "All figures for Rubin Ultra and Feynman come from GTC 2025 and 2026 roadmap slides and are not binding until market launch.",
+        "mn": "Rubin Ultra болон Feynman-ийн бүх тоо GTC 2025, 2026-ын замын зургийн слайдаас гаралтай бөгөөд зах зээлд гартал заавал биелэх үүрэггүй."
+      },
+      "art": "annahme",
+      "stuetzt_sich_auf": ["roadmap.naechste_generation_termin"],
+      "belastbarkeit": "solide",
+      "stand": "2026-08-31"
+    },
+    {
+      "id": "roadmap.a4",
+      "text": {
+        "de": "Die Datumsangaben der Zeitreihen haben Monatsgenauigkeit und folgen der Zeile Marktstart der Vergleichstabelle; der Tag im Datum ist ein Platzhalter.",
+        "en": "The dates in the time series are month-precise and follow the market-launch row of the comparison table; the day component is a placeholder.",
+        "mn": "Цаг хугацааны цувааны огноо сар хүртэл нарийвчлалтай бөгөөд харьцуулах хүснэгтийн зах зээлд гарсан мөрийг дагадаг; өдрийн хэсэг нь орлуулагч юм."
+      },
+      "art": "annahme",
+      "stuetzt_sich_auf": ["roadmap.leistung_je_gpu_relativ_a100", "roadmap.leistung_je_rack_kw"],
+      "belastbarkeit": "solide",
+      "stand": "2026-09-05"
+    }
+  ],
+
+  "luecken": [
+    {
+      "was": {
+        "de": "Preise und Liefertermine einzelner Kunden",
+        "en": "Prices and delivery dates for individual customers",
+        "mn": "Тодорхой худалдан авагчийн үнэ, хүргэлтийн хугацаа"
+      },
+      "grund": {
+        "de": "NVIDIA veroeffentlicht sie nicht; Zuliefererberichte allein tragen keine Zahl.",
+        "en": "NVIDIA does not publish them, and supplier reports alone do not carry a figure.",
+        "mn": "NVIDIA нийтэлдэггүй, нийлүүлэгчийн мэдээ дангаараа тоо болохгүй."
+      }
+    },
+    {
+      "was": {
+        "de": "Leistungsaufnahme je Rack fuer Rubin (VR200 NVL72)",
+        "en": "Power draw per rack for Rubin (VR200 NVL72)",
+        "mn": "Rubin (VR200 NVL72)-ийн рак тутмын цахилгаан хэрэглээ"
+      },
+      "grund": {
+        "de": "Auf der Seite steht keine Zahl; die Zeitreihe leistung_je_rack_kw endet deshalb bei GB300.",
+        "en": "The page states no figure, so the leistung_je_rack_kw series ends at GB300.",
+        "mn": "Хуудсанд тоо байхгүй тул leistung_je_rack_kw цуваа GB300 дээр төгсдөг."
+      }
+    },
+    {
+      "was": {
+        "de": "Vergleichbarkeit der Leistungsangaben ueber Generationen",
+        "en": "Comparability of performance figures across generations",
+        "mn": "Үе хоорондын гүйцэтгэлийн тоонуудын харьцуулах боломж"
+      },
+      "grund": {
+        "de": "Die Praezisionsformate wechseln; ein sauberer Iso-Format-Vergleich ist aus oeffentlichen Angaben nicht herstellbar.",
+        "en": "Precision formats change; a clean iso-format comparison cannot be built from public figures.",
+        "mn": "Нарийвчлалын формат өөрчлөгддөг; нийтийн эх сурвалжаас цэвэр ижил-форматын харьцуулалт хийх боломжгүй."
+      }
+    }
+  ],
+
+  "rohdaten": {
+    "generationen": [
+      {"name": "Ampere", "gpu": "A100", "marktstart": "2020-05", "knoten": "TSMC 7N", "relativ_a100": 1.0, "tdp_gpu_w": 400, "speicher_tbs": 2.0, "nvlink_gbs": 600, "status": "reif"},
+      {"name": "Ada Lovelace", "gpu": "L40S", "marktstart": "2022-10", "knoten": "TSMC 4N", "relativ_a100": 2.4, "tdp_gpu_w": 350, "speicher_tbs": 0.864, "nvlink_gbs": null, "status": "aktiv"},
+      {"name": "Hopper", "gpu": "H100/H200", "marktstart": "2022-03", "knoten": "TSMC 4N", "relativ_a100": 6.3, "tdp_gpu_w": 700, "speicher_tbs": 3.35, "nvlink_gbs": 900, "status": "aktiv"},
+      {"name": "Blackwell", "gpu": "B200/GB200", "marktstart": "2024", "knoten": "TSMC 4NP", "relativ_a100": 32, "tdp_gpu_w": 1000, "speicher_tbs": 8.0, "nvlink_gbs": 1800, "rack": "GB200 NVL72", "rack_kw": 120, "status": "volumen"},
+      {"name": "Blackwell Ultra", "gpu": "B300/GB300", "marktstart": "2025", "knoten": "TSMC 4NP", "relativ_a100": 48, "tdp_gpu_w": 1400, "speicher_tbs": 8.0, "nvlink_gbs": 1800, "rack": "GB300 NVL72", "rack_kw": 120, "status": "volumen"},
+      {"name": "Rubin", "gpu": "R200/VR200", "marktstart": "2026-06", "knoten": "TSMC 3N", "relativ_a100": 160, "tdp_gpu_w": 1800, "speicher_tbs": 22.0, "nvlink_gbs": 3600, "rack": "VR200 NVL72", "status": "hochlauf"},
+      {"name": "Rubin Ultra", "gpu": "VR300", "marktstart": "2027", "knoten": "TSMC 3N", "relativ_a100": 320, "tdp_gpu_w": 2300, "speicher_tbs": 32.0, "nvlink_gbs": 3600, "rack": "NVL576 Kyber", "rack_kw": 600, "status": "angekuendigt"},
+      {"name": "Feynman", "gpu": "Feynman + Rosa", "marktstart": "2028", "knoten": "3N-Klasse + 3D-Stacking", "status": "roadmap"}
+    ],
+    "datenstand_seite": "2026-08",
+    "methodik": "Dichte Werte ohne Sparsity-Verdopplung, SXM-/OAM-Variante. Relativ zu A100 vergleicht das jeweils schnellste unterstuetzte KI-Zahlenformat und mischt daher bewusst Praezisionen."
+  }
+}
