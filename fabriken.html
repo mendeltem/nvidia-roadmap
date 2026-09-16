@@ -163,6 +163,36 @@ footer{border-top:1px solid var(--line);padding-block:1.8rem 3rem;color:var(--mu
   font-size:.82rem}
 footer .wrap{display:grid;gap:.7rem;max-width:78ch}
 footer strong{color:var(--ink-2)}
+
+/* M15X-Rechner */
+.rechner{border:1px solid var(--line);border-radius:5px;background:var(--surface);
+  box-shadow:var(--shadow);overflow:hidden}
+.regler{display:grid;gap:1rem 1.4rem;padding:1.1rem;border-bottom:1px solid var(--line-soft);
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.regler label,.regler .feld{display:grid;gap:.35rem}
+.regler .kz{display:flex;justify-content:space-between;align-items:baseline;gap:.8rem}
+.regler .name{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-2)}
+.regler .wert{font-family:var(--font-mono);font-size:1rem;font-weight:600;
+  font-variant-numeric:tabular-nums;color:var(--ink)}
+.regler input[type=range]{width:100%;accent-color:var(--accent-hot);cursor:pointer}
+.regler .hinweis{font-family:var(--font-mono);font-size:.64rem;color:var(--muted);line-height:1.45}
+.umschalter{display:flex;border:1px solid var(--line);border-radius:4px;overflow:hidden;width:max-content}
+.umschalter button{appearance:none;font:inherit;font-family:var(--font-mono);font-size:.74rem;
+  padding:.35rem .8rem;border:0;background:var(--surface);color:var(--muted);cursor:pointer}
+.umschalter button+button{border-left:1px solid var(--line)}
+.umschalter button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.kennzahlen{display:grid;gap:.6rem;padding:1rem 1.1rem;border-bottom:1px solid var(--line-soft);
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kennzahlen div{display:grid;gap:.05rem}
+.kennzahlen b{font-family:var(--font-mono);font-size:1.2rem;font-weight:600;
+  font-variant-numeric:tabular-nums}
+.kennzahlen small{font-family:var(--font-mono);font-size:.64rem;color:var(--muted);
+  letter-spacing:.04em;text-transform:uppercase}
+.verlauf{padding:.3rem 0 0}
+.verlauf table{min-width:600px}
+.verlauf td .balken{display:block;height:8px;border-radius:2px;background:var(--hbm);min-width:2px}
+.verlauf tr.okt td{background:var(--hbm-dim)}
+.verlauf td.steil{color:var(--eng);font-weight:600}
 </style>
 </head>
 <body>
@@ -258,6 +288,138 @@ footer strong{color:var(--ink-2)}
     <li><b>NAND wird zurueckgefahren</b>, um Flaeche fuer DRAM freizumachen. Das ist
     die Firmenentscheidung, die den NAND-Preis mit antreibt.</li>
   </ul>
+</section>
+
+<section class="wrap" id="m15x">
+  <div class="sec-kopf">
+    <p class="label">SK hynix &middot; M15X im Detail</p>
+    <h2>Wafer und Geld, Monat fuer Monat</h2>
+    <p>Belegt sind nur zwei Punkte: rund 10.000 Wafer im Februar, 55.000 bis 60.000
+    Ende 2026. Monatswerte veroeffentlicht SK hynix nicht, Erloese je Wafer auch nicht.
+    Deshalb ein Rechner statt einer Zahl &mdash; alle vier Annahmen sind verstellbar.</p>
+  </div>
+
+  <div class="rechner">
+    <div class="regler">
+      <div class="feld">
+        <span class="kz"><span class="name">Form des Hochlaufs</span></span>
+        <div class="umschalter" id="m-form">
+          <button data-form="s" aria-pressed="true">S-Kurve</button>
+          <button data-form="lin" aria-pressed="false">linear</button>
+        </div>
+        <span class="hinweis">S-Kurve: langsam anlaufen, in der Mitte steil, zum Ziel flach
+        &mdash; so laufen Fabriken meist hoch.</span>
+      </div>
+      <label>
+        <span class="kz"><span class="name">Ziel Ende 2026</span><span class="wert" id="m-w-ziel"></span></span>
+        <input type="range" id="m-ziel" min="40" max="80" step="2.5" value="57.5">
+        <span class="hinweis">Gemeldet 55&ndash;60k. Ein anderer Bericht nennt 40k im 2. Halbjahr
+        und 80k in 2027.</span>
+      </label>
+      <label>
+        <span class="kz"><span class="name">HBM4-Preis je GB</span><span class="wert" id="m-w-preis"></span></span>
+        <input type="range" id="m-preis" min="10" max="40" step="1" value="15">
+        <span class="hinweis">Rund 15 $ (550 $ je 36-GB-Stapel) bis 31 $ (Nvidia-Preis 2027).
+        Hier steckt die groesste Unsicherheit.</span>
+      </label>
+      <label>
+        <span class="kz"><span class="name">Flaeche je Bit gegenueber DDR5</span><span class="wert" id="m-w-faktor"></span></span>
+        <input type="range" id="m-faktor" min="2.5" max="4" step="0.1" value="3">
+        <span class="hinweis">HBM3E rund 3&times;, HBM4 bis 4&times;. Mehr Flaeche heisst weniger
+        Gigabyte je Wafer.</span>
+      </label>
+    </div>
+
+    <div class="kennzahlen" id="m-kennzahlen"></div>
+
+    <div class="verlauf"><div class="tab-scroll"><table>
+      <thead><tr><th>Waferstart</th><th class="zahl">Wafer/Monat</th><th class="zahl">+ ggue. Vormonat</th>
+        <th style="width:26%"></th><th class="zahl">Erloes daraus</th><th>wird Umsatz etwa</th></tr></thead>
+      <tbody id="m-tabelle"></tbody>
+    </table></div></div>
+  </div>
+
+  <ul class="punkte" style="margin-top:1.2rem">
+    <li><b>Waferstart ist nicht Umsatz.</b> Belichtung, Durchkontaktierung, Stapeln und Test
+    dauern zusammen etwa drei bis vier Monate. Die rechte Spalte verschiebt deshalb um
+    vier Monate &mdash; was im Oktober startet, erscheint eher im Februar 2027 in der Bilanz.</li>
+    <li><b>Gigabyte je Wafer sind abgeleitet:</b> ein DDR5-Wafer auf dem 1b-Knoten liefert grob
+    2.800 GB, geteilt durch den Flaechenfaktor. Ausbeuteverluste beim Stapeln stecken im
+    Faktor, nicht getrennt.</li>
+    <li><b>Zur Einordnung:</b> SK hynix setzt derzeit rund 19 Mrd. Dollar im Monat um
+    (Q2 2026: 79 Bio. KRW). Die Kennzahl &bdquo;Anteil am Monatsumsatz&ldquo; bezieht sich
+    darauf.</li>
+  </ul>
+
+  <script>
+  (function(){
+    "use strict";
+    const $=id=>document.getElementById(id);
+    const MONATE=["Feb","Mrz","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+    const UMSATZMONAT=["Jun","Jul","Aug","Sep","Okt","Nov","Dez","Jan 27","Feb 27","Mrz 27","Apr 27"];
+    const START=10, GB_DDR5=2800, STAPEL_GB=36, HYNIX_MONAT=19; // Mrd $ je Monat
+    let form="s";
+
+    function verlauf(ziel){
+      const n=MONATE.length-1;
+      if(form==="lin") return MONATE.map((_,i)=>START+(ziel-START)*i/n);
+      // Logistische Kurve, auf Start und Ziel normiert, damit beide Enden exakt stimmen
+      const k=0.9, mitte=n*0.55;
+      const f=i=>1/(1+Math.exp(-k*(i-mitte)));
+      const f0=f(0), f1=f(n);
+      return MONATE.map((_,i)=>START+(ziel-START)*(f(i)-f0)/(f1-f0));
+    }
+    const mrd=v=>(v>=1?v.toFixed(2):v.toFixed(2)).replace(".",",");
+    const tsd=v=>Math.round(v*1000).toLocaleString("de-DE");
+
+    function rechne(){
+      const ziel=+$("m-ziel").value, preis=+$("m-preis").value, faktor=+$("m-faktor").value;
+      $("m-w-ziel").textContent=tsd(ziel);
+      $("m-w-preis").textContent=preis+" $/GB";
+      $("m-w-faktor").textContent=faktor.toFixed(1).replace(".",",")+"×";
+
+      const gb=GB_DDR5/faktor;
+      const jeWafer=gb*preis;                // Dollar je Wafer
+      const w=verlauf(ziel);
+      const okt=MONATE.indexOf("Okt");
+      const erloes=w.map(x=>x*1000*jeWafer/1e9);   // Mrd $ je Monat
+      const summe=erloes.reduce((a,b)=>a+b,0);
+      const deltas=w.map((x,i)=>i?x-w[i-1]:0);
+      const steilster=deltas.indexOf(Math.max(...deltas));
+
+      $("m-kennzahlen").innerHTML=[
+        [tsd(w[okt]),"Wafer/Monat Ende Oktober"],
+        ["+"+tsd(w[okt]-START),"Wafer/Monat mehr als im Februar"],
+        [Math.round(gb).toLocaleString("de-DE")+" GB","HBM je Wafer, ~"+Math.round(gb/STAPEL_GB)+" Stapel"],
+        [Math.round(jeWafer).toLocaleString("de-DE")+" $","Erloes je Wafer"],
+        [mrd(erloes[okt])+" Mrd $","Erloes aus Okt-Starts, je Monat"],
+        ["+"+mrd(erloes[okt]-erloes[0])+" Mrd $","mehr je Monat als im Februar"],
+        [mrd(summe)+" Mrd $","Summe aller Starts Feb&ndash;Dez"],
+        [(erloes[MONATE.length-1]/HYNIX_MONAT*100).toFixed(1).replace(".",",")+" %","Vollausbau am Monatsumsatz"]
+      ].map(([b,s])=>'<div><b>'+b+'</b><small>'+s+'</small></div>').join("");
+
+      const max=Math.max(...w);
+      $("m-tabelle").innerHTML=MONATE.map((m,i)=>
+        '<tr'+(i===okt?' class="okt"':'')+'>'
+        +'<td><b>'+m+' 2026</b></td>'
+        +'<td class="zahl">'+tsd(w[i])+'</td>'
+        +'<td class="zahl'+(i===steilster?' steil':'')+'">'+(i?'+'+tsd(deltas[i]):'&mdash;')+'</td>'
+        +'<td><span class="balken" style="width:'+(w[i]/max*100).toFixed(1)+'%"></span></td>'
+        +'<td class="zahl">'+mrd(erloes[i])+' Mrd $</td>'
+        +'<td>'+UMSATZMONAT[i]+'</td></tr>').join("");
+    }
+
+    document.getElementById("m-form").addEventListener("click",e=>{
+      const b=e.target.closest("button[data-form]"); if(!b) return;
+      form=b.dataset.form;
+      document.querySelectorAll("#m-form button").forEach(x=>
+        x.setAttribute("aria-pressed",String(x===b)));
+      rechne();
+    });
+    ["m-ziel","m-preis","m-faktor"].forEach(id=>$(id).addEventListener("input",rechne));
+    rechne();
+  })();
+  </script>
 </section>
 
 <section class="wrap">
