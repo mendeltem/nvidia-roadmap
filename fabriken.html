@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Die Speicherfabriken</title>
+<meta name="description" content="Wie viele Wafer SK hynix, Samsung und Micron heute produzieren und was bis 2030 dazukommt - Werk fuer Werk, mit Produkt, Termin und Technik.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%2376B900'/></svg>">
+<style>
+:root{
+  --ground:#EDF0E7; --surface:#FAFBF6; --surface-2:#E2E8D9; --surface-3:#D6DECA;
+  --ink:#11160E; --ink-2:#39432F; --muted:#6B7561;
+  --line:#C9D3BC; --line-soft:#DDE4D3;
+  --accent:#4C7800; --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.16); --accent-ghost:rgba(118,185,0,.07);
+  --hbm:#8A4B9E; --hbm-dim:rgba(138,75,158,.16);
+  --dram:#1F6FA8; --dram-dim:rgba(31,111,168,.14);
+  --nand:#B07414; --nand-dim:rgba(176,116,20,.14);
+  --eng:#A8442E; --eng-dim:rgba(168,68,46,.14);
+  --shadow:0 1px 0 rgba(17,22,14,.05),0 12px 32px -20px rgba(17,22,14,.5);
+  --font-display:"Bahnschrift","DIN Alternate","Oswald","Arial Narrow",sans-serif;
+  --font-body:"Segoe UI","Helvetica Neue",-apple-system,system-ui,sans-serif;
+  --font-mono:"Cascadia Mono",Consolas,"SFMono-Regular",ui-monospace,monospace;
+  --pad:clamp(1rem,3.5vw,2.75rem); --maxw:1180px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#070A05; --surface:#0F150C; --surface-2:#171F12; --surface-3:#1F2919;
+  --ink:#E9F0E3; --ink-2:#B4C1AA; --muted:#7C8974;
+  --line:#242F1D; --line-soft:#1B2415;
+  --accent:#93D900; --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.18); --accent-ghost:rgba(118,185,0,.06);
+  --hbm:#C48FD8; --hbm-dim:rgba(196,143,216,.18);
+  --dram:#6BB6E8; --dram-dim:rgba(107,182,232,.16);
+  --nand:#E0A63A; --nand-dim:rgba(224,166,58,.16);
+  --eng:#E5806A; --eng-dim:rgba(229,128,106,.16);
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 18px 40px -24px #000;
+}}
+:root[data-theme="dark"]{
+  --ground:#070A05; --surface:#0F150C; --surface-2:#171F12; --surface-3:#1F2919;
+  --ink:#E9F0E3; --ink-2:#B4C1AA; --muted:#7C8974;
+  --line:#242F1D; --line-soft:#1B2415;
+  --accent:#93D900; --accent-hot:#76B900;
+  --accent-dim:rgba(118,185,0,.18); --accent-ghost:rgba(118,185,0,.06);
+  --hbm:#C48FD8; --hbm-dim:rgba(196,143,216,.18);
+  --dram:#6BB6E8; --dram-dim:rgba(107,182,232,.16);
+  --nand:#E0A63A; --nand-dim:rgba(224,166,58,.16);
+  --eng:#E5806A; --eng-dim:rgba(229,128,106,.16);
+  --shadow:0 1px 0 rgba(255,255,255,.03),0 18px 40px -24px #000;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--font-body);
+  line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 84;
+  line-height:1.05;text-wrap:balance}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent-hot);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted)}
+
+header.kopf{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb,var(--ground) 90%,transparent);backdrop-filter:blur(12px)}
+.kopf-in{max-width:var(--maxw);margin:0 auto;padding:.55rem var(--pad);
+  display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.marke{font-family:var(--font-display);font-variation-settings:"wght" 700,"wdth" 80;
+  font-size:1rem;text-transform:uppercase;letter-spacing:.05em;margin-right:auto}
+.marke b{color:var(--accent)}
+.kopf-in a{font-family:var(--font-mono);font-size:.72rem;color:var(--muted);
+  text-decoration:none;padding:.28rem .5rem;border-radius:3px}
+.kopf-in a:hover{color:var(--ink);background:var(--accent-ghost)}
+
+.hero{padding:clamp(2rem,5vw,3.4rem) 0 1.2rem}
+h1{font-size:clamp(2rem,1.3rem + 3.2vw,3.8rem);text-transform:uppercase;
+  font-variation-settings:"wght" 700,"wdth" 78}
+.lede{max-width:62ch;color:var(--ink-2);font-size:clamp(1rem,.95rem + .3vw,1.15rem);
+  margin-top:.9rem}
+
+section{padding-block:clamp(1.8rem,4.5vw,3rem)}
+.sec-kopf{display:grid;gap:.45rem;margin-bottom:1.3rem;max-width:68ch}
+.sec-kopf h2{font-size:clamp(1.45rem,1.2rem + 1.3vw,2.2rem);text-transform:uppercase;
+  font-variation-settings:"wght" 700,"wdth" 80}
+.sec-kopf p{color:var(--ink-2)}
+
+/* Hochrechnung */
+.hoch{border:1px solid var(--line);border-radius:5px;background:var(--surface);
+  box-shadow:var(--shadow);overflow:hidden}
+.hoch-kopf{padding:.9rem 1.1rem;border-bottom:1px solid var(--line-soft);
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:baseline}
+.hoch-inhalt{padding:1.1rem;display:grid;gap:1.1rem}
+.firma{display:grid;gap:.5rem}
+.firma-kopf{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.firma-kopf h3{font-size:1.15rem;text-transform:uppercase}
+.firma-kopf .jetzt{font-family:var(--font-mono);font-size:.78rem;color:var(--muted)}
+.spur{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem}
+.stufe{border:1px solid var(--line);border-radius:3px;background:var(--surface-2);
+  padding:.5rem .55rem;display:grid;gap:.15rem;position:relative;overflow:hidden}
+.stufe .jahr{font-family:var(--font-mono);font-size:.64rem;color:var(--muted);
+  letter-spacing:.06em}
+.stufe .wert{font-family:var(--font-mono);font-size:1.05rem;font-weight:600;
+  font-variant-numeric:tabular-nums}
+.stufe .plus{font-family:var(--font-mono);font-size:.64rem;color:var(--accent)}
+.stufe.gemeldet{border-color:var(--accent);background:var(--accent-ghost)}
+.stufe.gemeldet::after{content:"gemeldet";position:absolute;right:.4rem;top:.35rem;
+  font-family:var(--font-mono);font-size:.55rem;color:var(--accent);
+  letter-spacing:.06em;text-transform:uppercase}
+.stufe[data-art="abgeleitet"]{border-style:dashed;border-color:var(--nand)}
+.stufe[data-art="abgeleitet"]::after{content:"abgeleitet"!important;color:var(--nand)!important}
+.stufe.geschaetzt::after{content:"interpoliert";position:absolute;right:.4rem;top:.35rem;
+  font-family:var(--font-mono);font-size:.55rem;color:var(--muted);
+  letter-spacing:.06em;text-transform:uppercase}
+@media (max-width:640px){.spur{grid-template-columns:repeat(2,1fr)}}
+
+.summe{border-top:1px solid var(--line);padding-top:.9rem;margin-top:.2rem}
+.summe .zeile{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-family:var(--font-mono);font-size:.85rem}
+.summe b{font-size:1.1rem}
+
+/* Werkstabellen */
+.tab-huelle{border:1px solid var(--line);border-radius:4px;background:var(--surface);
+  overflow:hidden;box-shadow:var(--shadow);margin-bottom:1.6rem}
+.tab-titel{padding:.7rem 1rem;border-bottom:1px solid var(--line);
+  background:var(--surface-2);display:flex;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;align-items:baseline}
+.tab-titel h3{font-size:1.1rem;text-transform:uppercase}
+.tab-titel .summe-k{font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+.tab-scroll{overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:660px}
+th,td{padding:.5rem .75rem;text-align:left;border-bottom:1px solid var(--line-soft);
+  font-family:var(--font-mono);font-size:.78rem;font-variant-numeric:tabular-nums;
+  vertical-align:top}
+thead th{background:var(--surface-3);font-size:.66rem;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--muted);font-weight:400}
+td.zahl,th.zahl{text-align:right;white-space:nowrap}
+tbody tr:hover td{background:var(--accent-ghost)}
+td b{color:var(--ink)}
+.pill{display:inline-block;font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;
+  padding:.06rem .34rem;border-radius:2px;border:1px solid;white-space:nowrap}
+.p-hbm{color:var(--hbm);border-color:var(--hbm-dim);background:var(--hbm-dim)}
+.p-dram{color:var(--dram);border-color:var(--dram-dim);background:var(--dram-dim)}
+.p-nand{color:var(--nand);border-color:var(--nand-dim);background:var(--nand-dim)}
+.p-logik{color:var(--muted);border-color:var(--line);background:var(--surface-2)}
+.st-lauft{color:var(--accent);font-weight:600}
+.st-bau{color:var(--nand)}
+.st-plan{color:var(--muted)}
+
+.kasten{border-left:3px solid var(--accent-hot);background:var(--accent-ghost);
+  padding:.75rem .9rem;border-radius:0 3px 3px 0;color:var(--ink-2);margin-top:1rem}
+.kasten.warn{border-left-color:var(--eng);background:var(--eng-dim)}
+.kasten b{color:var(--ink)}
+
+ul.punkte{list-style:none;padding:0;display:grid;gap:.6rem;max-width:68ch}
+ul.punkte li{display:grid;grid-template-columns:auto 1fr;gap:.6rem;color:var(--ink-2)}
+ul.punkte li::before{content:"";width:6px;height:6px;margin-top:.55rem;
+  background:var(--accent-hot);border-radius:1px}
+ul.punkte li b{color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding-block:1.8rem 3rem;color:var(--muted);
+  font-size:.82rem}
+footer .wrap{display:grid;gap:.7rem;max-width:78ch}
+footer strong{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="kopf">
+  <div class="kopf-in">
+    <span class="marke">Die <b>Speicherfabriken</b></span>
+    <a href="waferklemme.html">&larr; Waferklemme</a>
+    <a href="index.html">Silizium-Roadmap</a>
+    <a href="https://mendeltem.github.io/AI_Companys/nvidia-oekosystem.html">Oekosystem</a>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <p class="label">Werk fuer Werk &middot; Stand 16.09.2026</p>
+  <h1>Wer wie viel<br>Wafer startet</h1>
+  <p class="lede">Die Waferklemme zeigt, dass HBM die Flaeche frisst. Diese Seite zeigt
+  die andere Haelfte: wie viel Flaeche es ueberhaupt gibt, wo sie steht, was darauf
+  laeuft und wann das Neue dazukommt. Alle Angaben in 300-mm-Wafern je Monat.</p>
+</div>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Die Antwort auf die Frage</p>
+    <h2>Heute, in einem, zwei, drei Jahren</h2>
+    <p>Veroeffentlicht wird wenig. SK hynix nennt einen Stand und ein Ziel fuer 2030.
+    Samsung nennt einen Stand, aber kein Gesamtziel &mdash; die Zahl fuer 2029 ist
+    hier aus einzeln belegten Werken summiert und damit eine Untergrenze. Micron
+    nennt gar keine Gesamtzahl, nur seine HBM-Kapazitaet. Jede Stufe sagt, woher
+    sie kommt.</p>
+  </div>
+
+  <div class="hoch">
+    <div class="hoch-kopf">
+      <span class="label">DRAM-Waferstarts je Monat</span>
+      <span class="mono" style="font-size:.74rem;color:var(--muted)">
+        gruen = genannt &middot; gestrichelt = aus Werken summiert &middot; grau = gerechnet</span>
+    </div>
+    <div class="hoch-inhalt" id="hochrechnung"></div>
+    <div style="padding:0 1.1rem 1.1rem">
+      <div class="summe">
+        <div class="zeile"><span>Alle drei zusammen heute</span><b id="s-heute"></b></div>
+        <div class="zeile"><span>in drei Jahren</span><b id="s-drei"></b></div>
+        <div class="zeile" style="color:var(--muted)"><span>Zuwachs je Jahr im Schnitt</span><span id="s-cagr"></span></div>
+      </div>
+      <div class="kasten warn">
+        <b>Und das reicht nicht.</b> Micron sagt es am deutlichsten: Der Konzern
+        erwartet, nur <b>die Haelfte bis zwei Drittel</b> der Kundennachfrage bedienen
+        zu koennen. Samsung, SK hynix und Micron haben ihre gesamte
+        DRAM- und HBM-Ausbringung fuer 2027 bereits verkauft.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">SK hynix</p>
+    <h2>Alles Neue geht in DRAM</h2>
+    <p>Der Marktfuehrer bei HBM baut derzeit keine NAND-Kapazitaet dazu &mdash; dort
+    wird nur die Lagenzahl erhoeht. Jede neue Waferflaeche ist fuer DRAM vorgesehen,
+    und der groesste Einzelposten ist ein Werk, das es noch nicht gibt.</p>
+  </div>
+  <div class="tab-huelle">
+    <div class="tab-titel"><h3>SK hynix</h3>
+      <span class="summe-k">heute rund 620.000 Wafer/Monat DRAM &middot; Ziel 1.000.000 bis 2030</span></div>
+    <div class="tab-scroll"><table>
+      <thead><tr><th>Werk</th><th>Ort</th><th>Produkt</th><th>Stand</th><th class="zahl">Wafer/Monat</th><th>Termin</th></tr></thead>
+      <tbody>
+        <tr><td><b>M15X</b></td><td>Cheongju</td><td><span class="pill p-hbm">HBM4</span></td>
+          <td class="st-lauft">Serie seit Feb 2026</td><td class="zahl">10k &rarr; <b>55&ndash;60k</b></td><td>Vollausbau Ende 2026</td></tr>
+        <tr><td><b>M14 / M16</b></td><td>Icheon</td><td><span class="pill p-hbm">HBM</span> <span class="pill p-dram">Server-DRAM</span></td>
+          <td class="st-bau">Umruestung auf 1c</td><td class="zahl">+140k</td><td>2027</td></tr>
+        <tr><td><b>Yongin Fab 1</b></td><td>Yongin</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-plan">im Bau, sechs Reinraeume</td><td class="zahl">+360k</td><td>bis H1 2030</td></tr>
+        <tr><td><b>Wuxi</b></td><td>China</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-plan">zweite Phase</td><td class="zahl">+50 % lokal</td><td>offen</td></tr>
+        <tr><td>NAND-Werke</td><td>Cheongju, Dalian</td><td><span class="pill p-nand">NAND</span></td>
+          <td class="st-plan">keine neue Flaeche</td><td class="zahl">&mdash;</td><td>nur mehr Lagen</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <ul class="punkte">
+    <li><b>M15X lief vier Monate frueher an als geplant</b> und soll ueber die Haelfte
+    des weltweiten Zuwachses an HBM4-Kapazitaet stellen.</li>
+    <li><b>Der 1c-Knoten ist der eigentliche Hebel.</b> Die Kapazitaet auf diesem Knoten
+    soll von rund 20.000 auf 160.000 bis 190.000 Wafer monatlich steigen &mdash; bis
+    Ende 2026. Dichtere Knoten liefern mehr Bits je Wafer, ohne dass ein Gebaeude
+    entsteht.</li>
+    <li><b>Yongin ist die grosse Wette:</b> 360.000 Wafer monatlich aus einem einzigen
+    Standort, mehr als die Haelfte der heutigen Gesamtkapazitaet &mdash; aber erst
+    2030 vollstaendig.</li>
+    <li><b>NAND wird zurueckgefahren</b>, um Flaeche fuer DRAM freizumachen. Das ist
+    die Firmenentscheidung, die den NAND-Preis mit antreibt.</li>
+  </ul>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Samsung</p>
+    <h2>Der groesste Bestand, das langsamste Neue</h2>
+    <p>Samsung hat mehr Waferflaeche als jeder andere, aber der Zubau kommt
+    ueberwiegend aus Umruestung bestehender Linien. Das grosse neue Werk stand zwei
+    Jahre still.</p>
+  </div>
+  <div class="tab-huelle">
+    <div class="tab-titel"><h3>Samsung</h3>
+      <span class="summe-k">heute rund 650.000&ndash;700.000 Wafer/Monat DRAM</span></div>
+    <div class="tab-scroll"><table>
+      <thead><tr><th>Werk</th><th>Ort</th><th>Produkt</th><th>Stand</th><th class="zahl">Wafer/Monat</th><th>Termin</th></tr></thead>
+      <tbody>
+        <tr><td><b>P4</b></td><td>Pyeongtaek</td><td><span class="pill p-hbm">HBM4</span> <span class="pill p-dram">DRAM</span></td>
+          <td class="st-lauft">neue Linie in Betrieb</td><td class="zahl">100k, +120k geplant</td><td>2026</td></tr>
+        <tr><td><b>1c-Umruestung</b></td><td>mehrere</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-bau">laeuft</td><td class="zahl"><b>&gt; 200k</b></td><td>Ende 2026</td></tr>
+        <tr><td><b>Giheung</b></td><td>Giheung</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-plan">neu angekuendigt</td><td class="zahl">100k</td><td>offen</td></tr>
+        <tr><td><b>P5</b></td><td>Pyeongtaek</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-bau">Bau wieder aufgenommen</td><td class="zahl">offen</td><td>betriebsbereit 2028</td></tr>
+        <tr><td>Taylor</td><td>Texas</td><td><span class="pill p-logik">Logik 2 nm</span></td>
+          <td class="st-bau">Probelauf Ende 2026</td><td class="zahl">50k</td><td>Serie 2027</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="kasten">
+    <b>Taylor gehoert nicht in diese Rechnung.</b> Das Werk in Texas fertigt Logik in
+    2 Nanometer, keinen Speicher. Es taucht in vielen Uebersichten als
+    &bdquo;Samsung-Kapazitaet&ldquo; auf und verwaessert dann die Zahl &mdash; hier
+    steht es nur zur Abgrenzung.
+  </div>
+  <ul class="punkte">
+    <li><b>Ueber 200.000 Wafer monatlich auf dem 1c-Knoten bis Jahresende</b>, rund ein
+    Drittel der gesamten Ausbringung. Der Weg fuehrt ueber Umruestung, nicht ueber
+    neue Gebaeude.</li>
+    <li><b>Die HBM-Kapazitaet soll 2026 um die Haelfte wachsen</b>, mit HBM4 im
+    Mittelpunkt.</li>
+    <li><b>P5 war zwei Jahre eingemottet</b> und ist erst 2028 betriebsbereit. Wer
+    fragt, warum die Kapazitaet so traege reagiert: das ist die Antwort in einem
+    Gebaeude.</li>
+  </ul>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Micron</p>
+    <h2>Der Dritte, der aufholt und aussteigt</h2>
+    <p>Micron waechst bei HBM am schnellsten von niedriger Basis &mdash; und hat
+    gleichzeitig das Endkundengeschaeft eingestellt, um die Flaeche fuer
+    Rechenzentren frei zu machen.</p>
+  </div>
+  <div class="tab-huelle">
+    <div class="tab-titel"><h3>Micron</h3>
+      <span class="summe-k">HBM 40&ndash;50k &rarr; 100k Wafer/Monat bis Ende 2026</span></div>
+    <div class="tab-scroll"><table>
+      <thead><tr><th>Werk</th><th>Ort</th><th>Produkt</th><th>Stand</th><th class="zahl">Wafer/Monat</th><th>Termin</th></tr></thead>
+      <tbody>
+        <tr><td><b>HBM gesamt</b></td><td>mehrere</td><td><span class="pill p-hbm">HBM3E/4</span></td>
+          <td class="st-lauft">Ausbau laeuft</td><td class="zahl">40&ndash;50k &rarr; <b>100k</b></td><td>Ende 2026</td></tr>
+        <tr><td><b>ID1</b></td><td>Boise, Idaho</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-bau">im Bau</td><td class="zahl">offen</td><td>erste Wafer Mitte 2027</td></tr>
+        <tr><td><b>ID2</b></td><td>Boise, Idaho</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-plan">Baugrund vorbereitet</td><td class="zahl">offen</td><td>nach ID1</td></tr>
+        <tr><td><b>Hiroshima</b></td><td>Japan</td><td><span class="pill p-dram">DRAM</span></td>
+          <td class="st-bau">Modernisierung</td><td class="zahl">Knotenwechsel</td><td>laufend</td></tr>
+        <tr><td><b>Singapur</b></td><td>Singapur</td><td><span class="pill p-hbm">HBM-Packaging</span></td>
+          <td class="st-bau">seit Jan 2025 im Bau</td><td class="zahl">&mdash;</td><td>ab 2027</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <ul class="punkte">
+    <li><b>Plus 60.000 HBM-Wafer monatlich in einem Jahr</b> &mdash; die schnellste
+    relative Steigerung der drei, von der kleinsten Basis.</li>
+    <li><b>Crucial ist eingestellt.</b> Micron hat das Endkundengeschaeft mit Speicher
+    und SSDs aufgegeben, um die Kapazitaet auf Rechenzentren zu lenken. Das ist der
+    Grund, warum Riegel im Handel knapp und teuer sind.</li>
+    <li><b>Singapur baut Packaging, keine Wafer.</b> Der Flaschenhals bei HBM sitzt
+    nicht nur in der Fertigung, sondern auch im Stapeln und Testen.</li>
+    <li><b>HBM4E ab 2027.</b> Damit steigt der Flaechenbedarf je Bit noch einmal.</li>
+  </ul>
+</section>
+
+<section class="wrap">
+  <div class="sec-kopf">
+    <p class="label">Ehrlichkeit</p>
+    <h2>Was an diesen Zahlen weich ist</h2>
+  </div>
+  <ul class="punkte">
+    <li><b>Waferstarts sind keine Bits.</b> Ein dichterer Knoten liefert aus derselben
+    Flaeche mehr Speicher. Deshalb wuchs die DRAM-Kapazitaet 2025 um zwoelf Prozent,
+    waehrend die Bitmenge staerker stieg &mdash; und HBM allein um siebzig Prozent
+    zulegte, wobei konventionelles DDR schrumpfte.</li>
+    <li><b>Kaum eine Firma veroeffentlicht Waferzahlen.</b> Die Werte hier stammen aus
+    Branchendiensten (TrendForce, The Elec, DigiTimes) und Presseberichten. Die
+    Groessenordnung ist belastbar, die zweite Stelle nicht.</li>
+    <li><b>Termine verschieben sich.</b> M15X kam vier Monate frueher, Samsungs P5
+    stand zwei Jahre still, Samsungs Taylor rutschte auf 2027. Beide Richtungen
+    kommen vor.</li>
+    <li><b>Die Zwischenjahre sind gerechnet, nicht gemeldet.</b> In der Hochrechnung
+    oben sind nur die gruen markierten Punkte Firmenangaben.</li>
+    <li><b>Auch der Rohstoff wird knapp.</b> Fuer blanke Siliziumwafer wird eine
+    Angebotsluecke von acht Prozent 2026 auf vierundzwanzig Prozent 2028 erwartet.
+    Eine Fab nuetzt nichts, wenn die Scheiben fehlen.</li>
+  </ul>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Quellen.</strong> Kapazitaeten und Werksplaene: TrendForce, The Elec,
+    DigiTimes, Korea JoongAng Daily, Tom's Hardware. Micron-Aussagen zur Deckung der
+    Nachfrage: Quartalsgespraech, wiedergegeben bei Tom's Hardware.
+    SK-hynix-Investitionen: Form F-1 bei der SEC.</p>
+    <p><strong>Einheit.</strong> Alle Angaben sind 300-mm-Wafer je Monat, sofern nicht
+    anders vermerkt. &bdquo;Heute&ldquo; meint den Stand Mitte September 2026.</p>
+    <p><strong>Keine Anlageberatung.</strong> Diese Seite zaehlt Fabriken.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  // Jede Zahl traegt ihre Herkunft. Beim ersten Entwurf dieser Seite standen hier
+  // fuer Samsung ein 2030-Ziel und fuer Micron Heute- und Zielwert, die nirgends
+  // belegt waren - unter einer Ueberschrift, die "von der Firma genannt"
+  // versprach. Deshalb jetzt drei Arten, und die Seite zeigt, welche es ist:
+  //   gemeldet     Firma oder Branchendienst nennt die Zahl so
+  //   abgeleitet   Summe aus einzeln belegten Werken, nicht selbst genannt
+  //   interpoliert zwischen zwei Stuetzpunkten gerechnet
+  const FIRMEN=[
+    {name:"SK hynix",
+     heute:{wert:620, art:"gemeldet"},
+     ziel:{jahr:2030, wert:1000, art:"gemeldet"},
+     notiz:"Ziel genannt: DRAM-Kapazitaet bis 2030 verdoppeln"},
+    {name:"Samsung",
+     heute:{wert:675, art:"gemeldet", spanne:"650-700k"},
+     // Kein veroeffentlichtes Gesamtziel. Belegt sind einzelne Zubauten:
+     // P4 +120k und Giheung +100k. P5 (2028) hat keine genannte Groesse und
+     // fehlt deshalb - die Zahl ist eine Untergrenze, keine Prognose.
+     ziel:{jahr:2029, wert:895, art:"abgeleitet"},
+     notiz:"kein Gesamtziel genannt - Summe aus P4 und Giheung, ohne P5"},
+    {name:"Micron",
+     heute:null, ziel:null,
+     notiz:"Gesamtzahl DRAM-Wafer nicht veroeffentlicht - belegt ist nur HBM: 40-50k auf 100k bis Ende 2026"}
+  ];
+  const HEUTE=2026, JAHRE=[2026,2027,2028,2029];
+
+  function wert(f,j){
+    if(!f.heute) return null;
+    if(j<=HEUTE) return f.heute.wert;
+    if(j>=f.ziel.jahr) return f.ziel.wert;
+    const n=f.ziel.jahr-HEUTE;
+    const rate=Math.pow(f.ziel.wert/f.heute.wert,1/n);
+    return f.heute.wert*Math.pow(rate,j-HEUTE);
+  }
+  function art(f,j){
+    if(!f.heute) return null;
+    if(j<=HEUTE) return f.heute.art;
+    if(j===f.ziel.jahr) return f.ziel.art;
+    return "interpoliert";
+  }
+
+  const el=document.getElementById("hochrechnung");
+  el.innerHTML=FIRMEN.map(f=>{
+    if(!f.heute){
+      return '<div class="firma">'
+        + '<div class="firma-kopf"><h3>'+f.name+'</h3></div>'
+        + '<div class="kasten" style="margin:0">'+f.notiz+'. Eine Gesamtzahl '
+        + 'hier einzusetzen, waere geraten.</div></div>';
+    }
+    const stufen=JAHRE.map(j=>{
+      const v=wert(f,j);
+      const vor=j>HEUTE? wert(f,j-1):null;
+      const plus=vor? ((v/vor-1)*100):null;
+      const a=art(f,j);
+      const klasse=(a==="gemeldet")?"gemeldet":"geschaetzt";
+      const etikett=(a==="abgeleitet")?' data-art="abgeleitet"':'';
+      return '<div class="stufe '+klasse+'"'+etikett+'>'
+        + '<span class="jahr">'+(j===HEUTE?"heute":j)+'</span>'
+        + '<span class="wert">'+Math.round(v)+'k</span>'
+        + '<span class="plus">'+(plus!==null && plus>0.05?('+'+plus.toFixed(1)+' %'):'&nbsp;')+'</span>'
+        + '</div>';
+    }).join("");
+    return '<div class="firma">'
+      + '<div class="firma-kopf"><h3>'+f.name+'</h3>'
+      +   '<span class="jetzt">'+f.notiz+'</span></div>'
+      + '<div class="spur">'+stufen+'</div></div>';
+  }).join("");
+
+  // Die Summe nur aus Firmen mit belegtem Heute-Wert - und das offen sagen.
+  const mit=FIRMEN.filter(f=>f.heute);
+  const sHeute=mit.reduce((a,f)=>a+f.heute.wert,0);
+  const sDrei=mit.reduce((a,f)=>a+wert(f,HEUTE+3),0);
+  // Werte stehen in Tausend. Erst hochrechnen, dann mit deutschem
+  // Tausenderpunkt formatieren - sonst steht "1295.000" da, was nach
+  // eintausendzweihundertfuenfundneunzig mit drei Nachkommastellen aussieht.
+  const fmt=n=>Math.round(n*1000).toLocaleString("de-DE")+" Wafer/Monat";
+  document.getElementById("s-heute").textContent=fmt(sHeute);
+  document.getElementById("s-drei").textContent=fmt(sDrei);
+  document.getElementById("s-cagr").textContent=
+    "+"+((Math.pow(sDrei/sHeute,1/3)-1)*100).toFixed(1)+" % pro Jahr - "
+    + mit.map(f=>f.name).join(" und ")+", ohne Micron";
+})();
+</script>
+</body>
+</html>
