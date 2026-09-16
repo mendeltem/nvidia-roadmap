@@ -151,9 +151,12 @@ td b{color:var(--ink)}
 .kasten b{color:var(--ink)}
 
 ul.punkte{list-style:none;padding:0;display:grid;gap:.6rem;max-width:68ch}
-ul.punkte li{display:grid;grid-template-columns:auto 1fr;gap:.6rem;color:var(--ink-2)}
-ul.punkte li::before{content:"";width:6px;height:6px;margin-top:.55rem;
-  background:var(--accent-hot);border-radius:1px}
+/* Kein Grid: ein Listenpunkt enthaelt Punkt, fetten Anfang und Fliesstext -
+   drei Teile in zwei Spalten liessen den Text in eine eigene Zeile rutschen
+   und machten die erste Spalte so breit wie den ganzen Satz. */
+ul.punkte li{position:relative;padding-left:1.15rem;color:var(--ink-2)}
+ul.punkte li::before{content:"";position:absolute;left:0;top:.62em;
+  width:6px;height:6px;background:var(--accent-hot);border-radius:1px}
 ul.punkte li b{color:var(--ink)}
 
 footer{border-top:1px solid var(--line);padding-block:1.8rem 3rem;color:var(--muted);
